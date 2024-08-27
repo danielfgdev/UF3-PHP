@@ -1,0 +1,29 @@
+[
+    {
+        "usuario": "as",
+        "contrasena": "as",
+        "saldo": 0,
+        "jugadas": []
+    },
+    {
+        "usuario": "daa",
+        "contrasena": "daa",
+        "saldo": 0,
+        "edad": 18,
+        "jugadas": []
+    },
+    {
+        "usuario": "12",
+        "contrasena": "12",
+        "saldo": 0,
+        "edad": 30,
+        "jugadas": []
+    },
+    {
+        "usuario": "123",
+        "contrasena": "123",
+        "saldo": 0,
+        "edad": 123,
+        "jugadas": []
+    }
+]

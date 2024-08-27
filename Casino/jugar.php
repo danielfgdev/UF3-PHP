@@ -18,16 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($apuesta > $jugador['saldo']) {
             $mensajeResultado = "No tienes suficiente saldo para esta apuesta.";
         } else {
-            $resultado = lanzarDados();
+            $dados = [rand(1, 6), rand(1, 6)];
+            $resultado = array_sum($dados);
             $ganancia = 0;
 
             if (in_array($resultado, [7, 11])) {
                 $ganancia = $apuesta;
                 $jugador['saldo'] += $ganancia;
-                $mensajeResultado = "¡Ganaste €$ganancia! El resultado fue $resultado.";
+                $mensajeResultado = "¡Ganaste €$ganancia! Los dados mostraron: " . implode(' y ', $dados) . ". La suma es $resultado.";
             } else {
                 $jugador['saldo'] -= $apuesta;
-                $mensajeResultado = "Perdiste €$apuesta. El resultado fue $resultado.";
+                $mensajeResultado = "Perdiste €$apuesta. Los dados mostraron: " . implode(' y ', $dados) . ". La suma es $resultado.";
             }
 
             $jugada = [
@@ -69,7 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="game-container">
         <h1>¡Bienvenido, <?php echo htmlspecialchars($jugador['usuario']); ?>!</h1>
-        <p>Saldo disponible: €<?php echo $jugador['saldo']; ?></p>
+
+        <div class="instructions">
+            <h2>Instrucciones del Juego</h2>
+            <p class="instructions-text">En este juego, lanzas dos dados. Si la suma de los números en los dados es 7 o 11, ¡ganas! De lo contrario, pierdes la cantidad que apostaste.</p>
+        </div>
+
+        <p class="saldo-disponible">Saldo disponible: €<?php echo $jugador['saldo']; ?></p>
+
 
         <form method="POST">
             <label>Apuesta: <input type="number" name="apuesta" min="1" required></label><br>
@@ -101,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return null;
         }
 
-        document.getElementById('botonNoche').addEventListener('click', function () {
+        document.getElementById('botonNoche').addEventListener('click', function() {
             let currentMode = getCookie('modo');
             let newMode = currentMode === 'diurno' ? 'nocturno' : 'diurno';
             document.cookie = `modo=${newMode};path=/`;
@@ -109,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             document.getElementById('botonNoche').innerText = `Cambiar a modo ${newMode === 'diurno' ? 'nocturno' : 'diurno'}`;
         });
 
-        window.onload = function () {
+        window.onload = function() {
             let savedMode = getCookie('modo');
             if (savedMode) {
                 document.getElementById('modoEstilo').setAttribute('href', savedMode + '.css');

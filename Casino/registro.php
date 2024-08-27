@@ -8,12 +8,13 @@ $mensaje = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $contrasena = $_POST['contrasena'] ?? '';
+    $edad = (int) ($_POST['edad'] ?? 0); // Obtener la edad del formulario
     $saldoInicial = 0;
 
-    if (registrarJugador($usuario, $contrasena, $saldoInicial)) {
+    if (registrarJugador($usuario, $contrasena, $saldoInicial, $edad)) {
         $mensaje = "Registro exitoso. Ahora puedes <a href='index.php'>iniciar sesión</a>.";
     } else {
-        $error = "El nombre de usuario ya existe. Por favor, elige otro.";
+        $error = $edad < 18 ? "Debes tener al menos 18 años para registrarte." : "El nombre de usuario ya existe. Por favor, elige otro.";
     }
 }
 ?>
@@ -42,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="POST">
                 <label>Usuario: <input type="text" name="usuario" required></label><br>
                 <label>Contraseña: <input type="password" name="contrasena" required></label><br>
+                <label>Edad: <input type="number" name="edad" min="0" required></label><br>
                 <button type="submit">Registrarse</button>
             </form>
         <?php endif; ?>

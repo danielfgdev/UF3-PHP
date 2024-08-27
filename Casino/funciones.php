@@ -1,41 +1,22 @@
 <?php
-function verificarCredenciales($usuario, $contrasena, &$jugador)
-{
-    $jugadores = obtenerJugadores();
-
-    if (is_array($jugadores)) {
-        foreach ($jugadores as $j) {
-            if ($j['usuario'] === $usuario) {
-                if ($j['contrasena'] === $contrasena) {
-                    $jugador = $j;
-                    return 'correcto';
-                } else {
-                    return 'contrasena_incorrecta';
-                }
-            }
-        }
-    }
-
-    return 'no_existe';
-}
-
 function obtenerJugadores()
 {
-    $archivo = 'jugadores.json';
-    if (file_exists($archivo)) {
-        $datos = file_get_contents($archivo);
-        $jugadores = json_decode($datos, true);
-
-        if (is_array($jugadores)) {
-            return $jugadores;
-        }
-    }
-
-    return [];
+    $data = file_get_contents('jugadores.json');
+    return json_decode($data, true);
 }
 
-function registrarJugador($usuario, $contrasena, $saldoInicial)
+function guardarJugadores($jugadores)
 {
+    $data = json_encode($jugadores, JSON_PRETTY_PRINT);
+    file_put_contents('jugadores.json', $data);
+}
+
+function registrarJugador($usuario, $contrasena, $saldoInicial, $edad)
+{
+    if ($edad < 18) {
+        return false; // El jugador debe tener al menos 18 años
+    }
+
     $jugadores = obtenerJugadores();
 
     foreach ($jugadores as $j) {
@@ -48,6 +29,7 @@ function registrarJugador($usuario, $contrasena, $saldoInicial)
         'usuario' => $usuario,
         'contrasena' => $contrasena,
         'saldo' => $saldoInicial,
+        'edad' => $edad, // Añadir edad al nuevo jugador
         'jugadas' => []
     ];
 
@@ -57,14 +39,28 @@ function registrarJugador($usuario, $contrasena, $saldoInicial)
     return true; // Registro exitoso
 }
 
-function guardarJugadores($jugadores)
+function verificarCredenciales($usuario, $contrasena, &$jugador)
 {
-    $archivo = 'jugadores.json';
-    file_put_contents($archivo, json_encode($jugadores, JSON_PRETTY_PRINT));
+    $jugadores = obtenerJugadores();
+
+    foreach ($jugadores as $j) {
+        if ($j['usuario'] === $usuario) {
+            if ($j['contrasena'] === $contrasena) {
+                $jugador = $j;
+                return 'correcto';
+            } else {
+                return 'contrasena_incorrecta';
+            }
+        }
+    }
+
+    return 'no_existe';
 }
 
 function lanzarDados()
 {
-    return rand(2, 12);
+    $dado1 = rand(1, 6);
+    $dado2 = rand(1, 6);
+    $resultado = $dado1 + $dado2;
+    return [$dado1, $dado2, $resultado]; // Devolver los resultados de ambos dados y la suma
 }
-?>
