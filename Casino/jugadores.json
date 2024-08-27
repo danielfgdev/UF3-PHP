@@ -1,29 +1,242 @@
 [
     {
-        "usuario": "as",
-        "contrasena": "as",
-        "saldo": 0,
-        "jugadas": []
-    },
-    {
-        "usuario": "daa",
-        "contrasena": "daa",
-        "saldo": 0,
-        "edad": 18,
-        "jugadas": []
-    },
-    {
-        "usuario": "12",
-        "contrasena": "12",
-        "saldo": 0,
-        "edad": 30,
-        "jugadas": []
-    },
-    {
-        "usuario": "123",
-        "contrasena": "123",
-        "saldo": 0,
-        "edad": 123,
-        "jugadas": []
+        "usuario": "da",
+        "contrasena": "da",
+        "saldo": 4386,
+        "edad": 22,
+        "jugadas": [
+            {
+                "fecha": "2024-08-27 19:38:31",
+                "apuesta": 1,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4443
+            },
+            {
+                "fecha": "2024-08-27 19:38:35",
+                "apuesta": 1,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4442
+            },
+            {
+                "fecha": "2024-08-27 19:38:38",
+                "apuesta": 1,
+                "resultado": 9,
+                "ganancia": 0,
+                "saldo": 4441
+            },
+            {
+                "fecha": "2024-08-27 19:38:42",
+                "apuesta": 1,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4440
+            },
+            {
+                "fecha": "2024-08-27 19:38:44",
+                "apuesta": 1,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4439
+            },
+            {
+                "fecha": "2024-08-27 19:38:46",
+                "apuesta": 1,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4438
+            },
+            {
+                "fecha": "2024-08-27 19:38:49",
+                "apuesta": 2,
+                "resultado": 5,
+                "ganancia": 0,
+                "saldo": 4436
+            },
+            {
+                "fecha": "2024-08-27 19:38:52",
+                "apuesta": 2,
+                "resultado": 3,
+                "ganancia": 0,
+                "saldo": 4434
+            },
+            {
+                "fecha": "2024-08-27 19:38:54",
+                "apuesta": 2,
+                "resultado": 12,
+                "ganancia": 0,
+                "saldo": 4432
+            },
+            {
+                "fecha": "2024-08-27 19:38:58",
+                "apuesta": 2,
+                "resultado": 12,
+                "ganancia": 0,
+                "saldo": 4430
+            },
+            {
+                "fecha": "2024-08-27 19:39:00",
+                "apuesta": 2,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4428
+            },
+            {
+                "fecha": "2024-08-27 19:39:02",
+                "apuesta": 2,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4426
+            },
+            {
+                "fecha": "2024-08-27 19:39:06",
+                "apuesta": 2,
+                "resultado": 8,
+                "ganancia": 0,
+                "saldo": 4424
+            },
+            {
+                "fecha": "2024-08-27 19:39:07",
+                "apuesta": 2,
+                "resultado": 5,
+                "ganancia": 0,
+                "saldo": 4422
+            },
+            {
+                "fecha": "2024-08-27 19:39:09",
+                "apuesta": 2,
+                "resultado": 7,
+                "ganancia": 2,
+                "saldo": 4424
+            },
+            {
+                "fecha": "2024-08-27 19:43:51",
+                "apuesta": 12,
+                "resultado": 5,
+                "ganancia": 0,
+                "saldo": 4412
+            },
+            {
+                "fecha": "2024-08-27 19:43:53",
+                "apuesta": 12,
+                "resultado": 5,
+                "ganancia": 0,
+                "saldo": 4400
+            },
+            {
+                "fecha": "2024-08-27 19:43:55",
+                "apuesta": 12,
+                "resultado": 7,
+                "ganancia": 12,
+                "saldo": 4424
+            },
+            {
+                "fecha": "2024-08-27 19:44:02",
+                "apuesta": 12,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4412
+            },
+            {
+                "fecha": "2024-08-27 19:44:05",
+                "apuesta": 12,
+                "resultado": 9,
+                "ganancia": 0,
+                "saldo": 4400
+            },
+            {
+                "fecha": "2024-08-27 19:44:07",
+                "apuesta": 12,
+                "resultado": 10,
+                "ganancia": 0,
+                "saldo": 4388
+            },
+            {
+                "fecha": "2024-08-27 19:44:11",
+                "apuesta": 12,
+                "resultado": 7,
+                "ganancia": 12,
+                "saldo": 4412
+            },
+            {
+                "fecha": "2024-08-27 19:44:21",
+                "apuesta": 12,
+                "resultado": 3,
+                "ganancia": 0,
+                "saldo": 4400
+            },
+            {
+                "fecha": "2024-08-27 19:44:28",
+                "apuesta": 10,
+                "resultado": 7,
+                "ganancia": 10,
+                "saldo": 4420
+            },
+            {
+                "fecha": "2024-08-27 19:46:11",
+                "apuesta": 10,
+                "resultado": 4,
+                "ganancia": 0,
+                "saldo": 4410
+            },
+            {
+                "fecha": "2024-08-27 19:46:13",
+                "apuesta": 12,
+                "resultado": 5,
+                "ganancia": 0,
+                "saldo": 4398
+            },
+            {
+                "fecha": "2024-08-27 19:46:16",
+                "apuesta": 12,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4386
+            },
+            {
+                "fecha": "2024-08-27 19:46:33",
+                "apuesta": 10,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4376
+            },
+            {
+                "fecha": "2024-08-27 19:46:35",
+                "apuesta": 10,
+                "resultado": 11,
+                "ganancia": 10,
+                "saldo": 4396
+            },
+            {
+                "fecha": "2024-08-27 19:46:39",
+                "apuesta": 10,
+                "resultado": 9,
+                "ganancia": 0,
+                "saldo": 4386
+            },
+            {
+                "fecha": "2024-08-27 19:46:44",
+                "apuesta": 10,
+                "resultado": 6,
+                "ganancia": 0,
+                "saldo": 4376
+            },
+            {
+                "fecha": "2024-08-27 19:46:48",
+                "apuesta": 10,
+                "resultado": 12,
+                "ganancia": 0,
+                "saldo": 4366
+            },
+            {
+                "fecha": "2024-08-27 19:46:50",
+                "apuesta": 10,
+                "resultado": 7,
+                "ganancia": 10,
+                "saldo": 4386
+            }
+        ],
+        "index": 0
     }
 ]

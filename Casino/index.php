@@ -2,18 +2,22 @@
 session_start();
 include 'funciones.php';
 
+// Determina el modo actual (diurno o nocturno) desde la cookie
 $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
 $error = "";
 
+// Maneja el formulario de inicio de sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $contrasena = $_POST['contrasena'] ?? '';
 
+    // Verifica las credenciales del usuario
     $resultado = verificarCredenciales($usuario, $contrasena, $jugador);
 
+    // Maneja los resultados de la verificación
     if ($resultado === 'correcto') {
         $_SESSION['jugador'] = $jugador;
-        header("Location: jugar.php");
+        header("Location: jugar.php"); // Redirige al usuario al juego
         exit();
     } elseif ($resultado === 'contrasena_incorrecta') {
         $error = "Contraseña incorrecta.";
@@ -35,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
-    <button id="botonNoche" type="button">Dia/Noche</button>
+    <button id="botonNoche" type="button">Día/Noche</button>
 
     <div class="login-container">
         <h1>Iniciar Sesión</h1>
@@ -53,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
+        // Obtiene el valor de una cookie por su nombre
         function getCookie(name) {
             let cookies = document.cookie.split(';');
             for (let cookie of cookies) {
@@ -62,7 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return null;
         }
 
-        document.getElementById('botonNoche').addEventListener('click', function () {
+        // Cambia el modo de visualización entre diurno y nocturno
+        document.getElementById('botonNoche').addEventListener('click', function() {
             let currentMode = getCookie('modo');
             let newMode = currentMode === 'diurno' ? 'nocturno' : 'diurno';
             document.cookie = `modo=${newMode};path=/`;
@@ -70,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             document.getElementById('botonNoche').innerText = `Cambiar a modo ${newMode === 'diurno' ? 'nocturno' : 'diurno'}`;
         });
 
-        window.onload = function () {
+        // Al cargar la página, aplica el modo guardado en las cookies
+        window.onload = function() {
             let savedMode = getCookie('modo');
             if (savedMode) {
                 document.getElementById('modoEstilo').setAttribute('href', savedMode + '.css');

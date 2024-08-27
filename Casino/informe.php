@@ -2,8 +2,9 @@
 session_start();
 include 'funciones.php';
 
+// Verifica si el usuario está autenticado
 if (!isset($_SESSION['jugador'])) {
-    header("Location: index.php");
+    header("Location: index.php"); // Redirige al inicio de sesión si no está autenticado
     exit();
 }
 
@@ -22,7 +23,7 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
 </head>
 
 <body>
-    <button id="botonNoche" type="button">Dia/Noche</button>
+    <button id="botonNoche" type="button">Día/Noche</button>
 
     <div class="report-container">
         <h1>Informe de Uso</h1>
@@ -51,6 +52,7 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
     </div>
 
     <script>
+        // Obtiene el valor de una cookie por su nombre
         function getCookie(name) {
             let cookies = document.cookie.split(';');
             for (let cookie of cookies) {
@@ -60,7 +62,8 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
             return null;
         }
 
-        document.getElementById('botonNoche').addEventListener('click', function () {
+        // Cambia el modo de visualización entre diurno y nocturno
+        document.getElementById('botonNoche').addEventListener('click', function() {
             let currentMode = getCookie('modo');
             let newMode = currentMode === 'diurno' ? 'nocturno' : 'diurno';
             document.cookie = `modo=${newMode};path=/`;
@@ -68,7 +71,8 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
             document.getElementById('botonNoche').innerText = `Cambiar a modo ${newMode === 'diurno' ? 'nocturno' : 'diurno'}`;
         });
 
-        window.onload = function () {
+        // Al cargar la página, aplica el modo guardado en las cookies
+        window.onload = function() {
             let savedMode = getCookie('modo');
             if (savedMode) {
                 document.getElementById('modoEstilo').setAttribute('href', savedMode + '.css');
