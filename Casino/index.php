@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
-    <button id="botonNoche" type="button">Día/Noche</button>
+    <button id="botonNoche" type="button">Cambiar a modo nocturno </button>
 
     <div class="login-container">
         <h1>Iniciar Sesión</h1>
