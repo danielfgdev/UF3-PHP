@@ -155,8 +155,17 @@ table th,
 table td {
     padding: 8px;
     text-align: left;
+    border: 1px solid #ddd;
 }
 
 table th {
-    font-weight: bold;
+    background-color: #f4f4f4;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
 }

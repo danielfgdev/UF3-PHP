@@ -61,12 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } elseif (isset($_POST['recargar'])) {
         $recarga = (int) $_POST['recargar'];
-        $jugador['saldo'] += $recarga;
-        $mensajeResultado = "Has recargado €$recarga. Tu nuevo saldo es €" . $jugador['saldo'] . ".";
-        $_SESSION['jugador'] = $jugador;
 
-        // Actualiza el jugador en el archivo JSON
-        actualizarJugador($jugador);
+        // Verifica si el monto de la recarga está en el rango permitido
+        if ($recarga < 20 || $recarga > 100) {
+            $mensajeResultado = "La recarga debe estar entre €20 y €100.";
+        } else {
+            $jugador['saldo'] += $recarga;
+            $mensajeResultado = "Has recargado €$recarga. Tu nuevo saldo es €" . $jugador['saldo'] . ".";
+            $_SESSION['jugador'] = $jugador;
+
+            // Actualiza el jugador en el archivo JSON
+            actualizarJugador($jugador);
+        }
     }
 }
 ?>
@@ -102,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <!-- Formulario para recargar el saldo -->
         <form method="POST">
-            <label>Recargar saldo: <input type="number" name="recargar" min="1" required></label><br>
+            <label>Recargar saldo: <input type="number" name="recargar" min="20" max="100" required></label><br>
             <button type="submit">Recargar</button>
         </form>
 

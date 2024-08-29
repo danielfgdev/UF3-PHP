@@ -33,18 +33,30 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
         <?php if (empty($jugador['jugadas'])): ?>
             <p>No has realizado ninguna jugada aún.</p>
         <?php else: ?>
-            <ul>
-                <?php foreach ($jugador['jugadas'] as $jugada): ?>
-                    <li>
-                        <?php echo htmlspecialchars($jugada['fecha']); ?> - Apuesta:
-                        €<?php echo htmlspecialchars($jugada['apuesta']); ?> - Resultado:
-                        <?php echo htmlspecialchars($jugada['resultado']); ?> - Ganancia:
-                        €<?php echo htmlspecialchars($jugada['ganancia']); ?> - Saldo:
-                        €<?php echo htmlspecialchars($jugada['saldo']); ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Apuesta</th>
+                        <th>Resultado</th>
+                        <th>Ganancia</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($jugador['jugadas'] as $jugada): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($jugada['fecha']); ?></td>
+                            <td>€<?php echo htmlspecialchars($jugada['apuesta']); ?></td>
+                            <td><?php echo htmlspecialchars($jugada['resultado']); ?></td>
+                            <td>€<?php echo htmlspecialchars($jugada['ganancia']); ?></td>
+                            <td>€<?php echo htmlspecialchars($jugada['saldo']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         <?php endif; ?>
+
         <nav>
             <a href="jugar.php">Volver al juego</a> |
             <a href="salir.php">Salir</a>

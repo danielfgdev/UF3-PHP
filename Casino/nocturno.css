@@ -62,13 +62,9 @@ p a {
 
 /* Estilos para el historial de jugadas */
 
-table th,
-table td {
-    border: 1px solid #444;
-}
-
 table th {
     background-color: #333;
+    color: #fff;
 }
 
 table tr:nth-child(even) {
