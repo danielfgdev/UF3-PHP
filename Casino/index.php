@@ -16,8 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Maneja los resultados de la verificación
     if ($resultado === 'correcto') {
+        // Registra la nueva hora de inicio de sesión
+        $jugador['hora_inicio'] = date("Y-m-d H:i:s");
+
+        // Guarda la información del jugador en la sesión
         $_SESSION['jugador'] = $jugador;
-        header("Location: jugar.php"); // Redirige al usuario al juego
+
+        // Actualiza el jugador en el archivo JSON
+        actualizarJugador($jugador);
+
+        // Redirige al usuario al juego
+        header("Location: jugar.php");
         exit();
     } elseif ($resultado === 'contrasena_incorrecta') {
         $error = "Contraseña incorrecta.";
@@ -25,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "El usuario no existe. <a href='registro.php'>Regístrate aquí</a>.";
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">

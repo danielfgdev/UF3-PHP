@@ -10,6 +10,12 @@ if (!isset($_SESSION['jugador'])) {
 
 $jugador = $_SESSION['jugador'];
 $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
+
+// Obtiene la hora de inicio de sesión del jugador
+$horaInicio = obtenerHoraInicio($jugador['usuario']);
+
+// Obtiene el tiempo de sesión total
+$tiempoSesionTotal = calcularTiempoSesion($horaInicio);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,6 +35,22 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
         <h1>Informe de Uso</h1>
         <p>Usuario: <?php echo htmlspecialchars($jugador['usuario']); ?></p>
         <p>Saldo actual: €<?php echo htmlspecialchars($jugador['saldo']); ?></p>
+
+        <!-- Mostrar el tiempo total de sesión -->
+        <p>Tiempo total de sesión:
+            <?php
+            // Convertir el tiempo de sesión de segundos a horas, minutos, segundos
+            if ($tiempoSesionTotal !== null) {
+                $horas = floor($tiempoSesionTotal / 3600);
+                $minutos = floor(($tiempoSesionTotal % 3600) / 60);
+                $segundos = $tiempoSesionTotal % 60;
+                echo sprintf('%02d:%02d:%02d', $horas, $minutos, $segundos);
+            } else {
+                echo "N/A";
+            }
+            ?>
+        </p>
+
         <h2>Historial de Jugadas</h2>
         <?php if (empty($jugador['jugadas'])): ?>
             <p>No has realizado ninguna jugada aún.</p>
@@ -40,6 +62,7 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
                         <th>Apuesta</th>
                         <th>Resultado</th>
                         <th>Ganancia</th>
+                        <th>Perdida</th>
                         <th>Saldo</th>
                     </tr>
                 </thead>
@@ -50,6 +73,7 @@ $modo = isset($_COOKIE['modo']) ? $_COOKIE['modo'] : 'diurno';
                             <td>€<?php echo htmlspecialchars($jugada['apuesta']); ?></td>
                             <td><?php echo htmlspecialchars($jugada['resultado']); ?></td>
                             <td>€<?php echo htmlspecialchars($jugada['ganancia']); ?></td>
+                            <td>€<?php echo htmlspecialchars($jugada['perdida']); ?></td>
                             <td>€<?php echo htmlspecialchars($jugada['saldo']); ?></td>
                         </tr>
                     <?php endforeach; ?>

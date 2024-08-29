@@ -25,16 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $dados = [rand(1, 6), rand(1, 6)];
             $resultado = array_sum($dados);
             $ganancia = 0;
+            $perdida = 0;
 
             // Verifica si la apuesta es ganadora
             if (in_array($resultado, [7, 11])) {
                 // Ganar significa recibir el doble de la cantidad apostada
                 $ganancia = $apuesta; // La ganancia es igual a la cantidad apostada
-                $jugador['saldo'] += $apuesta + $ganancia; // Añade la cantidad apostada más la ganancia
-                $mensajeResultado = "¡Ganaste €" . ($apuesta + $ganancia) . "! Los dados mostraron: " . implode(' y ', $dados) . ". La suma es $resultado.";
+                $jugador['saldo'] += $ganancia; // Añade la cantidad apostada más la ganancia
+                $mensajeResultado = "¡Ganaste €" . ($ganancia) . "! Los dados mostraron: " . implode(' y ', $dados) . ". La suma es $resultado.";
             } else {
                 // Perder significa perder la cantidad apostada
-                $jugador['saldo'] -= $apuesta;
+                $perdida = $apuesta; // La pérdida es el doble de la cantidad apostada
+                $jugador['saldo'] -= $apuesta; // Resta la cantidad apostada del saldo del jugador
                 $mensajeResultado = "Perdiste €$apuesta. Los dados mostraron: " . implode(' y ', $dados) . ". La suma es $resultado.";
             }
 
@@ -44,9 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'apuesta' => $apuesta,
                 'resultado' => $resultado,
                 'ganancia' => $ganancia,
+                'perdida' => $perdida,
                 'saldo' => $jugador['saldo']
             ];
             $jugador['jugadas'][] = $jugada;
+
 
             // Actualiza la sesión del jugador
             $_SESSION['jugador'] = $jugador;
@@ -66,8 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($recarga < 20 || $recarga > 100) {
             $mensajeResultado = "La recarga debe estar entre €20 y €100.";
         } else {
+            // No modificar la hora de inicio, solo actualizar el saldo
+            $jugador = $_SESSION['jugador'];
+
+            // Actualiza el saldo
             $jugador['saldo'] += $recarga;
             $mensajeResultado = "Has recargado €$recarga. Tu nuevo saldo es €" . $jugador['saldo'] . ".";
+
+            // Guarda la información actualizada del jugador en la sesión
             $_SESSION['jugador'] = $jugador;
 
             // Actualiza el jugador en el archivo JSON
@@ -75,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -99,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <p class="saldo-disponible">Saldo disponible: €<?php echo $jugador['saldo']; ?></p>
+        <p id="temporizador">Tiempo de sesión: 00:00:00</p>
 
         <!-- Formulario para hacer una apuesta -->
         <form method="POST">
@@ -143,13 +155,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             document.getElementById('botonNoche').innerText = `Cambiar a modo ${newMode === 'diurno' ? 'nocturno' : 'diurno'}`;
         });
 
-        // Al cargar la página, aplica el modo guardado en las cookies
+        // Al cargar la página, aplica el modo guardado en las cookies y gestiona el temporizador
         window.onload = function() {
             let savedMode = getCookie('modo');
             if (savedMode) {
                 document.getElementById('modoEstilo').setAttribute('href', savedMode + '.css');
                 document.getElementById('botonNoche').innerText = `Cambiar a modo ${savedMode === 'diurno' ? 'nocturno' : 'diurno'}`;
             }
+
+            // Recupera el tiempo de inicio de la sesión de localStorage
+            let tiempoInicio = localStorage.getItem('tiempoInicio');
+
+            // Si no hay tiempo de inicio guardado o si la sesión es nueva, lo establecemos
+            if (!tiempoInicio || sessionStorage.getItem('sessionStart') !== 'true') {
+                tiempoInicio = new Date().toISOString();
+                localStorage.setItem('tiempoInicio', tiempoInicio);
+                sessionStorage.setItem('sessionStart', 'true');
+            }
+
+            // Calcula el tiempo transcurrido inmediatamente al cargar la página
+            let tiempoInicioFecha = new Date(tiempoInicio);
+            let tiempoActual = new Date();
+            let diferencia = new Date(tiempoActual - tiempoInicioFecha);
+            let horas = String(diferencia.getUTCHours()).padStart(2, '0');
+            let minutos = String(diferencia.getUTCMinutes()).padStart(2, '0');
+            let segundos = String(diferencia.getUTCSeconds()).padStart(2, '0');
+            document.getElementById('temporizador').textContent = `Tiempo de sesión: ${horas}:${minutos}:${segundos}`;
+
+            // Establece un intervalo para actualizar el temporizador cada segundo
+            setInterval(function() {
+                tiempoActual = new Date();
+                diferencia = new Date(tiempoActual - tiempoInicioFecha);
+                horas = String(diferencia.getUTCHours()).padStart(2, '0');
+                minutos = String(diferencia.getUTCMinutes()).padStart(2, '0');
+                segundos = String(diferencia.getUTCSeconds()).padStart(2, '0');
+                document.getElementById('temporizador').textContent = `Tiempo de sesión: ${horas}:${minutos}:${segundos}`;
+            }, 1000);
         };
     </script>
 </body>
