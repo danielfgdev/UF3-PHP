@@ -37,7 +37,7 @@
 
     <nav>
         <a href="juego.php">Volver al juego</a> |
-        <a href="index.php">Salir</a>
+        <a href="salir.php">Salir</a>
     </nav>
     </div>
 </body>
