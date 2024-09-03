@@ -17,19 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Si el login es correcto se redirige al juego,
         if ($_SESSION['usuario'] === $usuario && $_SESSION['contraseña'] === $contraseña) {
             $_SESSION['logged_in'] = true;
-            echo "<p>Login correcto</p>";
+            echo "<script>alert(\"Login correcto\");</script>";
             header("Location: juego.php");
 
 
             // Sino muestra mensaje de login incorrecto. 
         } else {
-            echo "<p>Login incorrecto</p>";
+            echo "<script>alert(\"Login incorrecto\");</script>";
         }
 
 
         // Si no hay nadie registrado deja otro mensaje.
     } else {
-        echo "<p>Ningun registro.</p>";
+        echo "<script>alert(\"Ningun registro\");</script>";
     }
 }
 ?>

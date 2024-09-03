@@ -9,6 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contraseña = $_POST['contraseña'];
     $edad = $_POST['edad'];
+    $nombre = $_POST['nombre'];
+    $primerApellido = $_POST['primerApellido'];
+    $segundoApellido = $_POST['segundoApellido'];
+    $dni = $_POST['dni'];
+    $sexo = $_POST['sexo'];
+
 
 
     // Si la edad es mas de 18 se registra el usuario en
@@ -17,6 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['usuario'] = $usuario;
         $_SESSION['contraseña'] = $contraseña;
         $_SESSION['edad'] = $edad;
+        $_SESSION['nombre'] = $nombre;
+        $_SESSION['primerApellido'] = $primerApellido;
+        $_SESSION['segundoApellido'] = $segundoApellido;
+        $_SESSION['dni'] = $dni;
+        $_SESSION['sexo'] = $sexo;
+
         header("Location: index.php");
 
 
