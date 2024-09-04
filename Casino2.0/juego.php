@@ -5,37 +5,49 @@
 session_start();
 
 
-// Se inicial el saldo si ya no lo esta, y se pone a cero.
+// Se inicializa el saldo si no esta ya, y se pone a cero.
 if (!isset($_SESSION['saldo'])) {
     $_SESSION['saldo'] = 0;
 }
 
 
-// Verifica si la solicitud es POST.
+// Inicializar un array para almacenar el historial de apuestas si no esta ya creado
+if (!isset($_SESSION['historial_apuestas'])) {
+    $_SESSION['historial_apuestas'] = [];
+}
+
+
+// Inicializar el contador de apuestas si no esta ya creado
+if (!isset($_SESSION['contador_apuestas'])) {
+    $_SESSION['contador_apuestas'] = 0;
+}
+
+
+// Verifica si la solicitud es POST para recargar saldo
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
 
-    // Coge la recarga del formulario.
+    // Coge la recarga del formulario
     $recarga = $_POST['recargar'];
 
 
-    // Verificar que la recarga sea válida.
+    // Verificar que la recarga sea valida
     if ($recarga >= 20 && $recarga <= 100) {
 
 
-        // Suma la recarga al saldo y deja el mensaje.
+        // Suma la recarga al saldo y deja el mensaje
         $_SESSION['saldo'] += $recarga;
-
         echo "<p>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
     } else {
 
 
-        // Si la recarga no esta en el rango deja el mensaje.
+        // Si la recarga no está en el rango deja el mensaje
         echo "<p>La recarga debe ser entre 20 y 100.</p>";
     }
 }
 
-// Verifica si la solicitud es POST.
+
+// Verifica si la solicitud es POST para apostar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
 
 
@@ -43,69 +55,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
     $apuesta = $_POST['apuesta'];
 
 
-    // Si la apuesta es mas grande que el saldo muestra un mensaje.
+    // Si la apuesta es más grande que el saldo muestra un mensaje
     if ($apuesta > $_SESSION['saldo']) {
         echo "<p>No tienes suficiente saldo para apostar esa cantidad.</p>";
     } else {
 
 
-
-        // Lanzamiento y suma de los dados.
+        // Lanzamiento y suma de los dados
         $dado1 = rand(1, 6);
         $dado2 = rand(1, 6);
         $suma = $dado1 + $dado2;
 
 
-        // Suma o resta saldo despendiendo del resultado de la apuesta.
+        // Determina el resultado y actualiza el saldo
         if ($suma == 7 || $suma == 11) {
             $_SESSION['saldo'] += $apuesta;
-            echo "<p>¡Ganaste! La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+            $resultado = 'Ganaste';
         } else {
             $_SESSION['saldo'] -= $apuesta;
-            echo "<p>Perdiste. La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+            $resultado = 'Perdiste';
         }
+
+
+        // Guardar los datos de la apuesta en el historial
+        $_SESSION['historial_apuestas'][] = [
+            'fecha' => date('Y-m-d H:i:s'),
+            'apuesta' => $apuesta,
+            'resultado' => $resultado,
+            'ganancia' => ($resultado === 'Ganaste') ? $apuesta : 0,
+            'perdida' => ($resultado === 'Perdiste') ? $apuesta : 0,
+            'saldo' => $_SESSION['saldo']
+        ];
+
+
+        // Incrementar el contador de apuestas
+        $_SESSION['contador_apuestas']++;
+
+
+        // Mostrar alerta cada 3 apuestas
+        if ($_SESSION['contador_apuestas'] % 3 == 0) {
+            echo "<script>alert('Recuerda que si no hay diversión no hay juego');</script>";
+        }
+
+
+        // Mensaje de nuevo saldo
+        echo "<p>{$resultado}! La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
     }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
+<?php include 'header.php'; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de los dados</title>
-</head>
+<div class="juego-container">
+    <h2>¡Bienvenido al juego de los dados!</h2>
 
-<body>
-
-    <div class="juego-container">
-        <h1>¡Bienvenido al juego de los dados!</h1>
-
-        <div class="instrucciones">
-            <h2>Instrucciones del Juego</h2>
-            <p class="instrucciones-descripcion">En este juego, lanzas dos dados. Si la suma de los números en los dados es 7 o 11, ¡ganas! De lo contrario, pierdes la cantidad que apostaste.</p>
-        </div>
-
-        <p class="dinero-disponible">Saldo disponible: <?php echo $_SESSION['saldo']; ?> </p>
-        <p id="temporizador">Tiempo de sesión: 00:00:00</p>
-
-        <form method="POST">
-            <label>Apuesta: <input type="number" name="apuesta" min="1" required></label><br>
-            <button type="submit">Lanzar Dados</button>
-        </form>
-
-        <form method="POST">
-            <label>Recargar saldo: <input type="number" name="recargar" min="20" max="100" required></label><br>
-            <button type="submit">Recargar</button>
-        </form>
-
-        <nav>
-            <a href="estadisticas.php">Estadísticas de uso</a> |
-            <a href="salir.php">Salir</a>
-        </nav>
+    <div class="instrucciones">
+        <h2>Instrucciones del Juego</h2>
+        <p class="instrucciones-descripcion">En este juego, lanzas dos dados. Si la suma de los números en los dados es 7 o 11, ¡ganas! De lo contrario, pierdes la cantidad que apostaste.</p>
     </div>
 
-</body>
+    <p class="dinero-disponible">Saldo disponible: <?php echo $_SESSION['saldo']; ?> </p>
+    <p id="temporizador">Tiempo de sesión: 00:00:00</p>
 
-</html>
+    <form method="POST">
+        <label>Apuesta: <input type="number" name="apuesta" min="1" required></label><br>
+        <button type="submit">Lanzar Dados</button>
+    </form>
+
+    <form method="POST">
+        <label>Recargar saldo: <input type="number" name="recargar" min="20" max="100" required></label><br>
+        <button type="submit">Recargar</button>
+    </form>
+
+    <nav>
+        <a href="estadisticas.php">Estadísticas de uso</a> |
+        <a href="salir.php">Salir</a>
+    </nav>
+</div>
+
+<?php include 'footer.php'; ?>
