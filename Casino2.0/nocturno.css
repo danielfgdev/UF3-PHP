@@ -1,1 +1,91 @@
-/* CSS solo para los colores del modo nocturno */
+/* nocturno.css */
+
+/* Estilos generales */
+body {
+    color: #f9f9f9;
+    background-color: #333;
+}
+
+.saldo-actual,
+h2 {
+    color: rgb(238, 20, 20);
+}
+
+/* Encabezado y pie de página */
+header,
+footer {
+    background-color: #222;
+    color: #f9f9f9;
+    border-bottom: 1px solid #444;
+}
+
+footer {
+    border-top: 1px solid #444;
+}
+
+/* Contenedores */
+.login-container,
+.registro-container,
+.juego-container,
+.estadisticas-container {
+    background-color: #444;
+    border: 1px solid #555;
+    color: #f9f9f9;
+}
+
+.datos-jugador {
+    color: #5f61f8
+}
+
+.saldo-actual {
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.estadisticas-container {
+    color: #222;
+}
+
+/* Tablas */
+table {
+    background-color: #444;
+    color: #f9f9f9;
+}
+
+table th {
+    color: #007bff;
+}
+
+/* Formularios */
+input,
+select,
+button {
+    background-color: #555;
+    color: #f9f9f9;
+    border: 1px solid #666;
+}
+
+.dinero-disponible {
+    color: rgb(50, 218, 50);
+}
+
+.mensaje-area p {
+    color: rgb(201, 15, 15);
+}
+
+nav a {
+    color: #5f61f8;
+}
+
+nav a:hover {
+    color: #a6ccf3;
+}
+
+.login-container a {
+    color: #5f61f8;
+}
+
+.login-container a:hover {
+    color: #a6ccf3;
+}

@@ -1,1 +1,245 @@
 /* CSS solo para los estilos */
+
+/* Estilos generales */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    margin-top: 80px;
+}
+
+h1,
+h2 {
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 50px;
+    padding-top: 20px;
+}
+
+/* Contenedores */
+.login-container,
+.registro-container,
+.juego-container,
+.estadisticas-container {
+    max-width: 800px;
+    margin: 50px auto;
+    margin-top: 200px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Formularios */
+
+form {
+    display: grid;
+
+}
+
+.apuesta-form {
+    display: grid;
+    margin-bottom: 50px;
+
+}
+
+
+.recarga-form {
+    display: grid;
+    margin-top: 50px;
+
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 16px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-registro {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-registro label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.form-registro input,
+.form-registro select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-registro button {
+    grid-column: span 2;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#registro {
+    display: grid;
+    gap: 20px;
+}
+
+button {
+    padding: 10px;
+    margin-top: 40px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Tablas */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Navegacion */
+
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+/* Otros elementos */
+
+.dinero-disponible,
+.instrucciones-descripcion {
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.dinero-disponible {
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.instrucciones-descripcion {
+    font-size: 18px;
+}
+
+
+/* Estilos para la pagina de estadisticas */
+
+.estadisticas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.datos-jugador {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.datos-jugador p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.estadisticas-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.saldo-actual {
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-align: center;
+}

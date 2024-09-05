@@ -19,22 +19,26 @@
     }
     ?>
 
-    <form action="procesarRegistro.php" method="post" id="registro">
-        <label>Usuario: <input type="text" name="usuario" required></label><br>
-        <label>Contraseña: <input type="password" name="contraseña" required></label><br>
-        <label>Edad: <input type="number" name="edad" min="0" required></label><br>
-        <label>Nombre <input type="text" name="nombre" required></label><br>
-        <label>Primer Apellido: <input type="text" name="primerApellido" required></label><br>
-        <label>Segundo Apellido: <input type="text" name="segundoApellido" required></label><br>
-        <label>dni <input type="text" name="dni" required></label><br>
-        <label for="sexo">Sexo:</label>
-        <select id="sexo" name="sexo">
-            <option value="masculino">masculino</option>
-            <option value="femenino">femenino</option>
-            <option value="random">random</option>
-        </select>
+    <form class="form-registro" action="procesarRegistro.php" method="post" id="registro">
+        <label>Usuario: <input type="text" name="usuario" required></label>
+        <label>Contraseña: <input type="password" name="contraseña" required></label>
+        <label>Edad: <input type="number" name="edad" min="0" required></label>
+        <label>Nombre: <input type="text" name="nombre" required></label>
+        <label>Primer Apellido: <input type="text" name="primerApellido" required></label>
+        <label>Segundo Apellido: <input type="text" name="segundoApellido" required></label>
+        <label>DNI: <input type="text" name="dni" required></label>
+        <div class="form-group">
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo">
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="random">Random</option>
+            </select>
+        </div>
+
         <button type="submit">Registrarse</button>
     </form>
+
 
 </div>
 

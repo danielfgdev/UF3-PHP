@@ -44,12 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Iniciar Sesión</h2>
 
     <form action="index.php" method="POST">
-        <label>Usuario:</label>
-        <input type="text" name="usuario" required>
-        <label>Contraseña:</label>
-        <input type="password" name="contraseña" required>
+        <div class="form-group">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+        </div>
+        <div class="form-group">
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+        </div>
         <button type="submit">Entrar</button>
     </form>
+
 
     <p>¿No tienes una cuenta? <a href="registro.php">Regístrate aquí</a></p>
 </div>

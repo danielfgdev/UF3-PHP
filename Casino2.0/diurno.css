@@ -1,1 +1,77 @@
-/* CSS solo para los colores del modo diurno */
+/* diurno.css */
+
+/* Estilos generales */
+body {
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* Encabezado y pie de pagina */
+header,
+footer {
+    background-color: #929292b7;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+footer {
+    border-top: 1px solid #ddd;
+}
+
+/* Contenedores */
+.login-container,
+.registro-container,
+.juego-container,
+.estadisticas-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.datos-jugador {
+    color: #5f61f8
+}
+
+/* Tablas */
+table {
+    background-color: #fff;
+    color: #333;
+}
+
+table th {
+    color: #007bff;
+}
+
+/* Formularios */
+input,
+select,
+button {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.dinero-disponible {
+    color: rgba(17, 31, 160, 0.842);
+}
+
+/* Mensajes */
+.mensaje-area p {
+    color: rgb(201, 15, 15);
+}
+
+nav a {
+    color: #0609b8;
+}
+
+nav a:hover {
+    color: #1a8cff;
+}
+
+.login-container a {
+    color: #0609b8;
+}
+
+.login-container a:hover {
+    color: #1a8cff;
+}

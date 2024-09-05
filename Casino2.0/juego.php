@@ -1,71 +1,60 @@
 <?php
 
-
 // Inicio de la sesion
 session_start();
-
 
 // Se inicializa el saldo si no esta ya, y se pone a cero.
 if (!isset($_SESSION['saldo'])) {
     $_SESSION['saldo'] = 0;
 }
 
-
 // Inicializar un array para almacenar el historial de apuestas si no esta ya creado
 if (!isset($_SESSION['historial_apuestas'])) {
     $_SESSION['historial_apuestas'] = [];
 }
-
 
 // Inicializar el contador de apuestas si no esta ya creado
 if (!isset($_SESSION['contador_apuestas'])) {
     $_SESSION['contador_apuestas'] = 0;
 }
 
+// Inicializa una variable para los mensajes
+$mensaje = '';
 
 // Verifica si la solicitud es POST para recargar saldo
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
-
     // Coge la recarga del formulario
     $recarga = $_POST['recargar'];
-
 
     // Verificar que la recarga sea valida
     if ($recarga >= 20 && $recarga <= 100) {
 
-
-        // Suma la recarga al saldo y deja el mensaje
+        // Suma la recarga al saldo y guarda el mensaje
         $_SESSION['saldo'] += $recarga;
-        echo "<p>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        $mensaje = "<p>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
     } else {
 
-
-        // Si la recarga no está en el rango deja el mensaje
-        echo "<p>La recarga debe ser entre 20 y 100.</p>";
+        // Si la recarga no esta en el rango guarda el mensaje
+        $mensaje = "<p>La recarga debe ser entre 20 y 100.</p>";
     }
 }
-
 
 // Verifica si la solicitud es POST para apostar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
 
-
     // Obtiene la cantidad a apostar
     $apuesta = $_POST['apuesta'];
 
-
-    // Si la apuesta es más grande que el saldo muestra un mensaje
+    // Si la apuesta es mas grande que el saldo muestra un mensaje
     if ($apuesta > $_SESSION['saldo']) {
-        echo "<p>No tienes suficiente saldo para apostar esa cantidad.</p>";
+        $mensaje = "<p>No tienes suficiente saldo para apostar esa cantidad.</p>";
     } else {
-
 
         // Lanzamiento y suma de los dados
         $dado1 = rand(1, 6);
         $dado2 = rand(1, 6);
         $suma = $dado1 + $dado2;
-
 
         // Determina el resultado y actualiza el saldo
         if ($suma == 7 || $suma == 11) {
@@ -75,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
             $_SESSION['saldo'] -= $apuesta;
             $resultado = 'Perdiste';
         }
-
 
         // Guardar los datos de la apuesta en el historial
         $_SESSION['historial_apuestas'][] = [
@@ -87,19 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
             'saldo' => $_SESSION['saldo']
         ];
 
-
         // Incrementar el contador de apuestas
         $_SESSION['contador_apuestas']++;
-
 
         // Mostrar alerta cada 3 apuestas
         if ($_SESSION['contador_apuestas'] % 3 == 0) {
             echo "<script>alert('Recuerda que si no hay diversión no hay juego');</script>";
         }
 
-
         // Mensaje de nuevo saldo
-        echo "<p>{$resultado}! La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        $mensaje = "<p>{$resultado}! La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
     }
 }
 ?>
@@ -114,15 +99,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
         <p class="instrucciones-descripcion">En este juego, lanzas dos dados. Si la suma de los números en los dados es 7 o 11, ¡ganas! De lo contrario, pierdes la cantidad que apostaste.</p>
     </div>
 
-    <p class="dinero-disponible">Saldo disponible: <?php echo $_SESSION['saldo']; ?> </p>
-    <p id="temporizador">Tiempo de sesión: 00:00:00</p>
+    <p class="dinero-disponible">Saldo disponible: <?php echo $_SESSION['saldo']; ?></p>
 
-    <form method="POST">
+
+    <div class="mensaje-area">
+        <p><?php echo $mensaje; ?></p>
+    </div>
+
+    <form method="POST" class="apuesta-form">
         <label>Apuesta: <input type="number" name="apuesta" min="1" required></label><br>
         <button type="submit">Lanzar Dados</button>
     </form>
 
-    <form method="POST">
+    <form method="POST" class="recarga-form">
         <label>Recargar saldo: <input type="number" name="recargar" min="20" max="100" required></label><br>
         <button type="submit">Recargar</button>
     </form>
