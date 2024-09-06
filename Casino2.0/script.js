@@ -25,3 +25,11 @@ toggleButton.addEventListener('click', () => {
     const currentTheme = document.getElementById('diaNoche').getAttribute('href') === 'diurno.css' ? 'diurno' : 'nocturno';
     applyTheme(currentTheme === 'diurno' ? 'nocturno' : 'diurno');
 });
+
+
+// Funcion para que el h1 lleve a la pagina inicial:
+
+document.getElementById("enlace").addEventListener("click", function () {
+    // Redirige a la página principal
+    window.location.href = "/index.php";
+});

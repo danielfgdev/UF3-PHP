@@ -243,3 +243,15 @@ nav a {
     font-size: 18px;
     text-align: center;
 }
+
+
+#enlace {
+    cursor: pointer;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+
+#enlace:hover {
+    color: #007bff;
+    text-decoration: underline;
+}

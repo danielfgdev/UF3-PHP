@@ -9,12 +9,12 @@
     <title>Casino Virtual</title>
 </head>
 
-<header>
-    <div class="header-container">
-        <h1>Casino Virtual</h1>
-        <button id="cambioTema">Cambiar a Modo Nocturno</button>
-    </div>
-</header>
-
 
 <body>
+
+    <header>
+        <div class="header-container">
+            <h1 id="enlace">Casino Virtual</h1>
+            <button id="cambioTema">Cambiar a Modo Nocturno</button>
+        </div>
+    </header>
