@@ -1,0 +1,24 @@
+Codificar en Lenguaje PHP lo siguiente:
+
+1-Mostrar "Hola mundo".
+2-Mostrar "Hola mundo", imprimiendo cada carácter en una línea.
+3-rear dos variables, sumarlas y mostrar el resultado.
+4-Mostrar los números del 0 al 100, separados por coma excepto el último número que debe finalizar con punto.
+5-Mostrar los números del 100 al 200, en líneas de diez números separados por coma.
+6-Insertar el texto: "Tarea grupal", con header 2.
+7-Insertar la imagen: "confucio.png".
+8-Crear un SELECT en HTML e insertar los números del 10 al 1 como opciones.
+9-Mostrar la tabla de multiplicar del 1 al 10.
+10-Mostrar el abecedario desde la a hasta la z, cada letra en una línea.
+11-Calcular el número de veces que aparece cada vocal en la frase: "Tarea grupal".
+12-Comprobar si la frase "dabale arroz a la zorra el abad" es palíndroma.
+13-Listar aquellos números del uno al cien que sean divisibles por 3.
+14-Convertir 451 grados Fahrenheit a Celsius.
+15-Imprimir la Diagonal Principal y la Diagonal Secundaria de una matriz cuadrada.
+
+
+Nota: La dimensión de una matriz viene definida por el número de filas y de columnas 
+y se denota como mxn. En el caso que el número de filas sea igual al de columnas
+, la matriz se denomina matriz cuadrada (m=n), entonces la matriz se dice que es de orden "n".
+Importante: Utilizar los elementos del lenguaje PHP vistos en clase (Variables, Constantes
+,Tipos de datos, Operadores, Estructuras de control, Funciones propias, Módulos, etc.).
