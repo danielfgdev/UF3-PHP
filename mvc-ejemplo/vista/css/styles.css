@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px;
+}
+.menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    position: relative;
+}
+.menu a:hover {
+    background-color: #575757;
+}
+.popup {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+.menu a:hover .popup {
+    display: block;
+}
