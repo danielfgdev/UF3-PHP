@@ -4,6 +4,9 @@
 
 header {
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
     top: 0;
     left: 0;
     width: 100%;
@@ -14,7 +17,7 @@ header {
 .header-container {
     max-width: 1200px;
     max-height: 100px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     padding: 0 20px;
 }
 
