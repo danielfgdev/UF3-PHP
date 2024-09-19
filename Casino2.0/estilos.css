@@ -28,7 +28,7 @@ body {
 
 h1,
 h2 {
-    margin: 0 0 20px;
+    margin: 0 0 1px;
     text-align: center;
 }
 
@@ -210,7 +210,7 @@ nav a {
 }
 
 .instrucciones-descripcion {
-    font-size: 18px;
+    font-size: 15px;
 }
 
 

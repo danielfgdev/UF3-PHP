@@ -32,7 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
         // Suma la recarga al saldo y guarda el mensaje
         $_SESSION['saldo'] += $recarga;
-        $mensaje = "<p>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        $mensaje = "<p style='color: #32da32;'>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+
+        // Guardar los datos de la recarga en el historial
+        $_SESSION['historial_apuestas'][] = [
+            'fecha' => date('Y-m-d H:i:s'),
+            'recarga' => $recarga,
+            'apuesta' => 0,
+            'resultado' => 'Recarga',
+            'ganancia' => 0,
+            'perdida' => 0,
+            'saldo' => $_SESSION['saldo']
+        ];
     } else {
 
         // Si la recarga no esta en el rango guarda el mensaje
@@ -48,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
 
     // Si la apuesta es mas grande que el saldo muestra un mensaje
     if ($apuesta > $_SESSION['saldo']) {
-        $mensaje = "<p>No tienes suficiente saldo para apostar esa cantidad.</p>";
+        $mensaje = "<p style='color: #ee1414;'>No tienes suficiente saldo para apostar esa cantidad.</p>";
     } else {
 
         // Lanzamiento y suma de los dados
@@ -84,7 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
         }
 
         // Mensaje de nuevo saldo
-        $mensaje = "<p>{$resultado}! La suma fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        if ($resultado === 'Ganaste') {
+            $mensaje = "<p style='color: #32da32;'>{$resultado}! La suma de los dados fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        } else {
+            $mensaje = "<p style='color: #ee1414;'>{$resultado}! La suma de los dados fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
+        }
     }
 }
 ?>

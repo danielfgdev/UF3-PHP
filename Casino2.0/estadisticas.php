@@ -1,6 +1,5 @@
 <?php
 
-
 // Inicio de la sesion
 session_start();
 ?>
@@ -30,6 +29,7 @@ session_start();
             <thead>
                 <tr>
                     <th>Fecha</th>
+                    <th>Recarga</th>
                     <th>Apuesta</th>
                     <th>Resultado</th>
                     <th>Ganancia</th>
@@ -43,6 +43,7 @@ session_start();
                     foreach ($_SESSION['historial_apuestas'] as $apuesta) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($apuesta['fecha']) . "</td>";
+                        echo "<td>" . htmlspecialchars($apuesta['recarga'] ?? 0) . "</td>";
                         echo "<td>" . htmlspecialchars($apuesta['apuesta']) . "</td>";
                         echo "<td>" . htmlspecialchars($apuesta['resultado']) . "</td>";
                         echo "<td>" . htmlspecialchars($apuesta['ganancia']) . "</td>";

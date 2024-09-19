@@ -8,7 +8,7 @@ body {
 
 .saldo-actual,
 h2 {
-    color: rgb(238, 20, 20);
+    color: #ee1414;
 }
 
 /* Encabezado y pie de página */
@@ -67,12 +67,12 @@ button {
 }
 
 .dinero-disponible {
-    color: rgb(50, 218, 50);
+    color: #32da32;
 }
 
-.mensaje-area p {
+/* .mensaje-area p {
     color: rgb(201, 15, 15);
-}
+} */
 
 nav a {
     color: #5f61f8;
