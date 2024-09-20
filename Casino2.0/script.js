@@ -32,3 +32,11 @@ toggleButton.addEventListener('click', () => {
 document.getElementById("enlace").addEventListener("click", function () {
     window.location.href = "index.php";
 });
+
+
+// Obtener el año actual
+
+const currentYear = new Date().getFullYear();
+// Asignar el año al span con id="year"
+
+document.getElementById("year").textContent = currentYear;
