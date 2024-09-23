@@ -1,30 +1,63 @@
 <?php
-
-// Inicio de la sesion
+// Inicio de la sesión
 session_start();
+
+// Incluir la conexión a la base de datos
+include 'conexionBD.php';
+
+// Verificar que el usuario esté logueado
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php");
+    exit();
+}
+
+// Preparar la consulta para obtener los datos del jugador desde la base de datos
+$apodo = $_SESSION['usuario'];  // El apodo está guardado en la sesión
+$sql = "SELECT * FROM jugador WHERE apodo = :apodo";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':apodo', $apodo);
+
+// Ejecutar la consulta
+if ($stmt->execute()) {
+    // Obtener los datos del jugador
+    $jugadorDatos = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($jugadorDatos) {
+        // Asignar los datos a variables
+        $nombre = htmlspecialchars($jugadorDatos['nombre']);
+        $primerApellido = htmlspecialchars(explode(' ', $jugadorDatos['apellidos'])[0]);
+        $segundoApellido = htmlspecialchars(explode(' ', $jugadorDatos['apellidos'])[1] ?? '');
+        $edad = htmlspecialchars($jugadorDatos['edad']);
+        $dni = htmlspecialchars($jugadorDatos['dni']);
+        $sexo = htmlspecialchars($jugadorDatos['sexo']);
+        $saldo = htmlspecialchars($jugadorDatos['saldo']);
+    } else {
+        echo "No se encontraron datos para el jugador.";
+        exit();
+    }
+} else {
+    echo "Error al obtener los datos del jugador.";
+    exit();
+}
 ?>
 
 <?php include 'header.php'; ?>
 
 <div class="estadisticas-container">
     <section class="datos-jugador">
-
-        <!-- Coje los datos del jugador de procesarRegistro.php y los muestra -->
         <h2>Datos del jugador:</h2>
-        <?php
-        echo "<p><b>Usuario:</b> " . htmlspecialchars($_SESSION['usuario']) . "</p>";
-        echo "<p><b>Nombre:</b> " . htmlspecialchars($_SESSION['nombre']) . "</p>";
-        echo "<p><b>Primer Apellido:</b> " . htmlspecialchars($_SESSION['primerApellido']) . "</p>";
-        echo "<p><b>Segundo Apellido:</b> " . htmlspecialchars($_SESSION['segundoApellido']) . "</p>";
-        echo "<p><b>Edad:</b> " . htmlspecialchars($_SESSION['edad']) . "</p>";
-        echo "<p><b>DNI:</b> " . htmlspecialchars($_SESSION['dni']) . "</p>";
-        echo "<p><b>Sexo:</b> " . htmlspecialchars($_SESSION['sexo']) . "</p>";
-        ?>
+        <p><b>Usuario:</b> <?php echo $apodo; ?></p>
+        <p><b>Nombre:</b> <?php echo $nombre; ?></p>
+        <p><b>Primer Apellido:</b> <?php echo $primerApellido; ?></p>
+        <p><b>Segundo Apellido:</b> <?php echo $segundoApellido; ?></p>
+        <p><b>Edad:</b> <?php echo $edad; ?></p>
+        <p><b>DNI:</b> <?php echo $dni; ?></p>
+        <p><b>Sexo:</b> <?php echo $sexo; ?></p>
     </section>
 
     <section class="estadisticas">
         <h2>Estadísticas de Apuestas</h2>
-        <p class="saldo-actual">Saldo actual: <?php echo htmlspecialchars($_SESSION['saldo']); ?></p>
+        <p class="saldo-actual">Saldo actual: <?php echo $saldo; ?></p>
         <table>
             <thead>
                 <tr>
@@ -39,6 +72,8 @@ session_start();
             </thead>
             <tbody>
                 <?php
+                // Aquí podrías incluir la lógica para mostrar el historial de apuestas,
+                // si tienes los datos almacenados en la base de datos.
                 if (isset($_SESSION['historial_apuestas']) && count($_SESSION['historial_apuestas']) > 0) {
                     foreach ($_SESSION['historial_apuestas'] as $apuesta) {
                         echo "<tr>";

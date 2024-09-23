@@ -1,64 +1,64 @@
 <?php
-
-// Inicio de la sesion
+// Inicio de la sesión
 session_start();
 
+// Incluir la conexión a la base de datos
+include 'conexionBD.php';
 
-// Verificar que el metodo POST
+// Verificar que el método sea POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
-    $contraseña = $_POST['contraseña'];
+    $contrasena = $_POST['contrasena'];
 
+    // Preparar la consulta para verificar el usuario
+    $sql = "SELECT * FROM jugador WHERE apodo = :usuario";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':usuario', $usuario);
 
-    // Verifica si en las variables hay datos
-    if (isset($_SESSION['usuario']) && isset($_SESSION['contraseña'])) {
+    if ($stmt->execute()) {
+        $usuarioDatos = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Verificar si el usuario existe y la contraseña es correcta
+        if ($usuarioDatos && password_verify($contrasena, $usuarioDatos['contrasena'])) {
+            // Almacenar datos en la sesión
+            $_SESSION['usuario'] = $usuarioDatos['apodo'];
+            $_SESSION['nombre'] = $usuarioDatos['nombre'];
+            $_SESSION['primerApellido'] = explode(' ', $usuarioDatos['apellidos'])[0]; // Primer apellido
+            $_SESSION['segundoApellido'] = explode(' ', $usuarioDatos['apellidos'])[1] ?? ''; // Segundo apellido
+            $_SESSION['edad'] = $usuarioDatos['edad'];
+            $_SESSION['dni'] = $usuarioDatos['dni'];
+            $_SESSION['sexo'] = $usuarioDatos['sexo'];
+            $_SESSION['saldo'] = $usuarioDatos['saldo']; // Saldo desde la base de datos
+            $_SESSION['historial_apuestas'] = []; // Inicializa el historial de apuestas
 
-        // Si el login es correcto se redirige al juego,
-        if ($_SESSION['usuario'] === $usuario && $_SESSION['contraseña'] === $contraseña) {
-            $_SESSION['logged_in'] = true;
-            echo "<script>alert(\"Login correcto\");</script>";
+            // Redirigir a estadisticas.php
             header("Location: juego.php");
-
-
-            // Sino muestra mensaje de login incorrecto. 
+            exit();
         } else {
             echo "<script>alert(\"Login incorrecto\");</script>";
         }
-
-
-        // Si no hay nadie registrado deja otro mensaje.
     } else {
-        echo "<script>alert(\"Ningun registro\");</script>";
+        echo "<script>alert(\"Error al verificar usuario\");</script>";
     }
 }
 ?>
 
-
-
 <?php include 'header.php'; ?>
-
-
 
 <div class="login-container">
     <h2>Iniciar Sesión</h2>
-
     <form action="index.php" method="POST">
         <div class="form-group">
             <label for="usuario">Usuario:</label>
             <input type="text" id="usuario" name="usuario" required>
         </div>
         <div class="form-group">
-            <label for="contraseña">Contraseña:</label>
-            <input type="password" id="contraseña" name="contraseña" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
         </div>
         <button type="submit">Entrar</button>
     </form>
-
-
     <p>¿No tienes una cuenta? <a href="registro.php">Regístrate aquí</a></p>
 </div>
-
-
 
 <?php include 'footer.php'; ?>

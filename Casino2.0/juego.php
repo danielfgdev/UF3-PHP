@@ -1,19 +1,41 @@
 <?php
 
-// Inicio de la sesion
+// Inicio de la sesión
 session_start();
 
-// Se inicializa el saldo si no esta ya, y se pone a cero.
-if (!isset($_SESSION['saldo'])) {
-    $_SESSION['saldo'] = 0;
+// Incluir la conexión a la base de datos
+include 'conexionBD.php';
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php");
+    exit();
 }
 
-// Inicializar un array para almacenar el historial de apuestas si no esta ya creado
+// Obtener el apodo del usuario desde la sesión
+$usuario = $_SESSION['usuario'];
+
+// Recuperar el saldo del usuario desde la base de datos
+$stmt = $pdo->prepare("SELECT saldo FROM jugador WHERE apodo = :apodo");
+$stmt->bindParam(':apodo', $usuario);
+$stmt->execute();
+$resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Si se encuentra el usuario, establecer el saldo en la sesión
+if ($resultado) {
+    $_SESSION['saldo'] = $resultado['saldo'];
+} else {
+    // Si no se encuentra el usuario, redirigir a la página de login
+    header("Location: index.php");
+    exit();
+}
+
+// Inicializar un array para almacenar el historial de apuestas si no está ya creado
 if (!isset($_SESSION['historial_apuestas'])) {
     $_SESSION['historial_apuestas'] = [];
 }
 
-// Inicializar el contador de apuestas si no esta ya creado
+// Inicializar el contador de apuestas si no está ya creado
 if (!isset($_SESSION['contador_apuestas'])) {
     $_SESSION['contador_apuestas'] = 0;
 }
@@ -24,14 +46,20 @@ $mensaje = '';
 // Verifica si la solicitud es POST para recargar saldo
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
-    // Coge la recarga del formulario
+    // Obtener la recarga del formulario
     $recarga = $_POST['recargar'];
 
-    // Verificar que la recarga sea valida
+    // Verificar que la recarga sea válida
     if ($recarga >= 20 && $recarga <= 100) {
 
-        // Suma la recarga al saldo y guarda el mensaje
+        // Sumar la recarga al saldo y actualizar en la base de datos
         $_SESSION['saldo'] += $recarga;
+        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE apodo = :apodo");
+        $stmt->bindParam(':saldo', $_SESSION['saldo']);
+        $stmt->bindParam(':apodo', $usuario);
+        $stmt->execute();
+
+        // Mensaje de éxito
         $mensaje = "<p style='color: #32da32;'>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
 
         // Guardar los datos de la recarga en el historial
@@ -45,8 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
             'saldo' => $_SESSION['saldo']
         ];
     } else {
-
-        // Si la recarga no esta en el rango guarda el mensaje
+        // Si la recarga no es válida, mensaje de error
         $mensaje = "<p>La recarga debe ser entre 20 y 100.</p>";
     }
 }
@@ -54,10 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 // Verifica si la solicitud es POST para apostar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
 
-    // Obtiene la cantidad a apostar
+    // Obtener la cantidad a apostar
     $apuesta = $_POST['apuesta'];
 
-    // Si la apuesta es mas grande que el saldo muestra un mensaje
+    // Si la apuesta es mayor que el saldo, muestra un mensaje de error
     if ($apuesta > $_SESSION['saldo']) {
         $mensaje = "<p style='color: #ee1414;'>No tienes suficiente saldo para apostar esa cantidad.</p>";
     } else {
@@ -75,6 +102,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
             $_SESSION['saldo'] -= $apuesta;
             $resultado = 'Perdiste';
         }
+
+        // Actualizar el saldo en la base de datos
+        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE apodo = :apodo");
+        $stmt->bindParam(':saldo', $_SESSION['saldo']);
+        $stmt->bindParam(':apodo', $usuario);
+        $stmt->execute();
 
         // Guardar los datos de la apuesta en el historial
         $_SESSION['historial_apuestas'][] = [
@@ -94,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
             echo "<script>alert('Recuerda que si no hay diversión no hay juego');</script>";
         }
 
-        // Mensaje de nuevo saldo
+        // Mensaje de resultado
         if ($resultado === 'Ganaste') {
             $mensaje = "<p style='color: #32da32;'>{$resultado}! La suma de los dados fue $suma. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
         } else {
@@ -115,7 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
     </div>
 
     <p class="dinero-disponible">Saldo disponible: <?php echo $_SESSION['saldo']; ?></p>
-
 
     <div class="mensaje-area">
         <p><?php echo $mensaje; ?></p>
