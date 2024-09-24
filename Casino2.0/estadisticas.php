@@ -11,15 +11,16 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-// Preparar la consulta para obtener los datos del jugador desde la base de datos
-$apodo = $_SESSION['usuario'];  // El apodo está guardado en la sesión
-$sql = "SELECT * FROM jugador WHERE apodo = :apodo";
+// Obtener el id del jugador desde la sesión
+$id_jugador = $_SESSION['id_jugador'];
+
+// Preparar la consulta para obtener los datos del jugador desde la base de datos usando id_jugador
+$sql = "SELECT * FROM jugador WHERE id_jugador = :id_jugador";
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':apodo', $apodo);
+$stmt->bindParam(':id_jugador', $id_jugador);
 
 // Ejecutar la consulta
 if ($stmt->execute()) {
-    // Obtener los datos del jugador
     $jugadorDatos = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($jugadorDatos) {
@@ -46,13 +47,17 @@ if ($stmt->execute()) {
 <div class="estadisticas-container">
     <section class="datos-jugador">
         <h2>Datos del jugador:</h2>
-        <p><b>Usuario:</b> <?php echo $apodo; ?></p>
+        <p><b>Usuario:</b> <?php echo $_SESSION['usuario']; ?></p>
         <p><b>Nombre:</b> <?php echo $nombre; ?></p>
         <p><b>Primer Apellido:</b> <?php echo $primerApellido; ?></p>
         <p><b>Segundo Apellido:</b> <?php echo $segundoApellido; ?></p>
         <p><b>Edad:</b> <?php echo $edad; ?></p>
         <p><b>DNI:</b> <?php echo $dni; ?></p>
         <p><b>Sexo:</b> <?php echo $sexo; ?></p>
+        <!-- Botón para modificar datos -->
+        <form action="modificarDatos.php" method="GET">
+            <button type="submit">Modificar</button>
+        </form>
     </section>
 
     <section class="estadisticas">
@@ -62,32 +67,33 @@ if ($stmt->execute()) {
             <thead>
                 <tr>
                     <th>Fecha</th>
-                    <th>Recarga</th>
                     <th>Apuesta</th>
+                    <th>Saldo Inicial</th>
+                    <th>Saldo Final</th>
                     <th>Resultado</th>
-                    <th>Ganancia</th>
-                    <th>Pérdida</th>
-                    <th>Saldo</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Aquí podrías incluir la lógica para mostrar el historial de apuestas,
-                // si tienes los datos almacenados en la base de datos.
-                if (isset($_SESSION['historial_apuestas']) && count($_SESSION['historial_apuestas']) > 0) {
-                    foreach ($_SESSION['historial_apuestas'] as $apuesta) {
+                // Preparar la consulta para obtener el historial de jugadas
+                $sqlJugadas = "SELECT * FROM jugada WHERE id_jugador = :id_jugador ORDER BY hora DESC";
+                $stmtJugadas = $pdo->prepare($sqlJugadas);
+                $stmtJugadas->bindParam(':id_jugador', $id_jugador);
+                $stmtJugadas->execute();
+                $historialJugadas = $stmtJugadas->fetchAll(PDO::FETCH_ASSOC);
+
+                if (count($historialJugadas) > 0) {
+                    foreach ($historialJugadas as $jugada) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($apuesta['fecha']) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['recarga'] ?? 0) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['apuesta']) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['resultado']) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['ganancia']) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['perdida']) . "</td>";
-                        echo "<td>" . htmlspecialchars($apuesta['saldo']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['hora']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['apuesta']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['saldo_inicial']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['saldo_final']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['apuesta'] > 0 ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Ganó' : 'Perdió') : 'Recarga') . "</td>";
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='6'>No hay apuestas registradas.</td></tr>";
+                    echo "<tr><td colspan='5'>No hay jugadas registradas.</td></tr>";
                 }
                 ?>
             </tbody>

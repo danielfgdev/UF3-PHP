@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
 
-    // Preparar la consulta para verificar el usuario
+    // Preparar la consulta para verificar el usuario por apodo
     $sql = "SELECT * FROM jugador WHERE apodo = :usuario";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':usuario', $usuario);
@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verificar si el usuario existe y la contraseña es correcta
         if ($usuarioDatos && password_verify($contrasena, $usuarioDatos['contrasena'])) {
             // Almacenar datos en la sesión
+            $_SESSION['id_jugador'] = $usuarioDatos['id_jugador']; // Guardar el id único del jugador
             $_SESSION['usuario'] = $usuarioDatos['apodo'];
             $_SESSION['nombre'] = $usuarioDatos['nombre'];
             $_SESSION['primerApellido'] = explode(' ', $usuarioDatos['apellidos'])[0]; // Primer apellido
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['saldo'] = $usuarioDatos['saldo']; // Saldo desde la base de datos
             $_SESSION['historial_apuestas'] = []; // Inicializa el historial de apuestas
 
-            // Redirigir a estadisticas.php
+            // Redirigir a juego.php
             header("Location: juego.php");
             exit();
         } else {

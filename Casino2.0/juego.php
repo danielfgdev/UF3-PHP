@@ -12,12 +12,12 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-// Obtener el apodo del usuario desde la sesión
-$usuario = $_SESSION['usuario'];
+// Obtener el id_jugador desde la sesión
+$id_jugador = $_SESSION['id_jugador'];
 
-// Recuperar el saldo del usuario desde la base de datos
-$stmt = $pdo->prepare("SELECT saldo FROM jugador WHERE apodo = :apodo");
-$stmt->bindParam(':apodo', $usuario);
+// Recuperar el saldo del usuario desde la base de datos usando id_jugador
+$stmt = $pdo->prepare("SELECT saldo FROM jugador WHERE id_jugador = :id_jugador");
+$stmt->bindParam(':id_jugador', $id_jugador);
 $stmt->execute();
 $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -28,11 +28,6 @@ if ($resultado) {
     // Si no se encuentra el usuario, redirigir a la página de login
     header("Location: index.php");
     exit();
-}
-
-// Inicializar un array para almacenar el historial de apuestas si no está ya creado
-if (!isset($_SESSION['historial_apuestas'])) {
-    $_SESSION['historial_apuestas'] = [];
 }
 
 // Inicializar el contador de apuestas si no está ya creado
@@ -54,24 +49,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
         // Sumar la recarga al saldo y actualizar en la base de datos
         $_SESSION['saldo'] += $recarga;
-        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE apodo = :apodo");
+        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE id_jugador = :id_jugador");
         $stmt->bindParam(':saldo', $_SESSION['saldo']);
-        $stmt->bindParam(':apodo', $usuario);
+        $stmt->bindParam(':id_jugador', $id_jugador);
         $stmt->execute();
 
         // Mensaje de éxito
         $mensaje = "<p style='color: #32da32;'>Has recargado $recarga. Tu nuevo saldo es " . $_SESSION['saldo'] . ".</p>";
 
-        // Guardar los datos de la recarga en el historial
-        $_SESSION['historial_apuestas'][] = [
-            'fecha' => date('Y-m-d H:i:s'),
-            'recarga' => $recarga,
-            'apuesta' => 0,
-            'resultado' => 'Recarga',
-            'ganancia' => 0,
-            'perdida' => 0,
-            'saldo' => $_SESSION['saldo']
-        ];
+        // Guardar los datos de la recarga en la tabla jugada
+        $stmt = $pdo->prepare("INSERT INTO jugada (id_jugador, apuesta, saldo_inicial, saldo_final) VALUES (:id_jugador, 0, :saldo_inicial, :saldo_final)");
+        $saldo_inicial = $_SESSION['saldo'] - $recarga; // Saldo antes de la recarga
+        $stmt->bindParam(':id_jugador', $id_jugador);
+        $stmt->bindParam(':saldo_inicial', $saldo_inicial); // Asegúrate de que esta es una variable
+        $stmt->bindParam(':saldo_final', $_SESSION['saldo']); // Asegúrate de que esta es una variable
+        $stmt->execute();
     } else {
         // Si la recarga no es válida, mensaje de error
         $mensaje = "<p>La recarga debe ser entre 20 y 100.</p>";
@@ -94,6 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
         $dado2 = rand(1, 6);
         $suma = $dado1 + $dado2;
 
+        // Guardar el saldo inicial antes de realizar la apuesta
+        $saldo_inicial = $_SESSION['saldo'];
+
         // Determina el resultado y actualiza el saldo
         if ($suma == 7 || $suma == 11) {
             $_SESSION['saldo'] += $apuesta;
@@ -103,21 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
             $resultado = 'Perdiste';
         }
 
-        // Actualizar el saldo en la base de datos
-        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE apodo = :apodo");
+        // Actualizar el saldo en la base de datos usando id_jugador
+        $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE id_jugador = :id_jugador");
         $stmt->bindParam(':saldo', $_SESSION['saldo']);
-        $stmt->bindParam(':apodo', $usuario);
+        $stmt->bindParam(':id_jugador', $id_jugador);
         $stmt->execute();
 
-        // Guardar los datos de la apuesta en el historial
-        $_SESSION['historial_apuestas'][] = [
-            'fecha' => date('Y-m-d H:i:s'),
-            'apuesta' => $apuesta,
-            'resultado' => $resultado,
-            'ganancia' => ($resultado === 'Ganaste') ? $apuesta : 0,
-            'perdida' => ($resultado === 'Perdiste') ? $apuesta : 0,
-            'saldo' => $_SESSION['saldo']
-        ];
+        // Guardar los datos de la apuesta en la tabla jugada
+        $stmt = $pdo->prepare("INSERT INTO jugada (id_jugador, apuesta, saldo_inicial, saldo_final) VALUES (:id_jugador, :apuesta, :saldo_inicial, :saldo_final)");
+        $stmt->bindParam(':id_jugador', $id_jugador);
+        $stmt->bindParam(':apuesta', $apuesta);
+        $stmt->bindParam(':saldo_inicial', $saldo_inicial); // Asegúrate de que esta es una variable
+        $saldo_final = $_SESSION['saldo']; // Asegúrate de que esta es una variable
+        $stmt->bindParam(':saldo_final', $saldo_final);
+        $stmt->execute();
 
         // Incrementar el contador de apuestas
         $_SESSION['contador_apuestas']++;
