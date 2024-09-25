@@ -68,6 +68,7 @@ if ($stmt->execute()) {
                 <tr>
                     <th>Fecha</th>
                     <th>Apuesta</th>
+                    <th>Lanzamiento</th> <!-- Columna para mostrar el lanzamiento -->
                     <th>Saldo Inicial</th>
                     <th>Saldo Final</th>
                     <th>Resultado</th>
@@ -87,13 +88,19 @@ if ($stmt->execute()) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($jugada['hora']) . "</td>";
                         echo "<td>" . htmlspecialchars($jugada['apuesta']) . "</td>";
+                        echo "<td>" . htmlspecialchars($jugada['lanzamiento']) . "</td>";
                         echo "<td>" . htmlspecialchars($jugada['saldo_inicial']) . "</td>";
                         echo "<td>" . htmlspecialchars($jugada['saldo_final']) . "</td>";
-                        echo "<td>" . htmlspecialchars($jugada['apuesta'] > 0 ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Ganó' : 'Perdió') : 'Recarga') . "</td>";
+
+                        // Determinar el resultado y el color de la celda
+                        $resultado = ($jugada['apuesta'] > 0) ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Ganó' : 'Perdió') : 'Recarga';
+                        $color = ($resultado === 'Ganó') ? '#32da32' : (($resultado === 'Perdió') ? '#ee1414' : 'black');
+
+                        echo "<td style='color: $color;'>" . htmlspecialchars($resultado) . "</td>"; // Color basado en el resultado
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5'>No hay jugadas registradas.</td></tr>";
+                    echo "<tr><td colspan='6'>No hay jugadas registradas.</td></tr>";
                 }
                 ?>
             </tbody>

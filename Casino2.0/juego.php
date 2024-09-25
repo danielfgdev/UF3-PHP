@@ -40,13 +40,11 @@ $mensaje = '';
 
 // Verifica si la solicitud es POST para recargar saldo
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
-
     // Obtener la recarga del formulario
     $recarga = $_POST['recargar'];
 
     // Verificar que la recarga sea válida
     if ($recarga >= 20 && $recarga <= 100) {
-
         // Sumar la recarga al saldo y actualizar en la base de datos
         $_SESSION['saldo'] += $recarga;
         $stmt = $pdo->prepare("UPDATE jugador SET saldo = :saldo WHERE id_jugador = :id_jugador");
@@ -72,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recargar'])) {
 
 // Verifica si la solicitud es POST para apostar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
-
     // Obtener la cantidad a apostar
     $apuesta = $_POST['apuesta'];
 
@@ -80,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
     if ($apuesta > $_SESSION['saldo']) {
         $mensaje = "<p style='color: #ee1414;'>No tienes suficiente saldo para apostar esa cantidad.</p>";
     } else {
-
         // Lanzamiento y suma de los dados
         $dado1 = rand(1, 6);
         $dado2 = rand(1, 6);
@@ -104,13 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
         $stmt->bindParam(':id_jugador', $id_jugador);
         $stmt->execute();
 
-        // Guardar los datos de la apuesta en la tabla jugada
-        $stmt = $pdo->prepare("INSERT INTO jugada (id_jugador, apuesta, saldo_inicial, saldo_final) VALUES (:id_jugador, :apuesta, :saldo_inicial, :saldo_final)");
+        // Guardar los datos de la apuesta en la tabla jugada, incluyendo el lanzamiento
+        $stmt = $pdo->prepare("INSERT INTO jugada (id_jugador, apuesta, saldo_inicial, saldo_final, lanzamiento) VALUES (:id_jugador, :apuesta, :saldo_inicial, :saldo_final, :lanzamiento)");
         $stmt->bindParam(':id_jugador', $id_jugador);
         $stmt->bindParam(':apuesta', $apuesta);
-        $stmt->bindParam(':saldo_inicial', $saldo_inicial); // Asegúrate de que esta es una variable
+        $stmt->bindParam(':saldo_inicial', $saldo_inicial);
         $saldo_final = $_SESSION['saldo']; // Asegúrate de que esta es una variable
         $stmt->bindParam(':saldo_final', $saldo_final);
+        $stmt->bindParam(':lanzamiento', $suma); // Agregar el lanzamiento aquí
         $stmt->execute();
 
         // Incrementar el contador de apuestas
