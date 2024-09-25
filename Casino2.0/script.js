@@ -1,7 +1,9 @@
 // Obtener referencias a los elementos
 const toggleButton = document.getElementById('cambioTema'); // Usa el nuevo ID
 
+
 // Función para aplicar el tema
+
 function applyTheme(theme) {
     if (theme === 'nocturno') {
         document.getElementById('diaNoche').setAttribute('href', 'nocturno.css');
@@ -14,13 +16,17 @@ function applyTheme(theme) {
     }
 }
 
+
 // Cargar el tema guardado en localStorage al cargar la página
+
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'diurno';
     applyTheme(savedTheme);
 });
 
+
 // Cambiar el tema al hacer clic en el botón
+
 toggleButton.addEventListener('click', () => {
     const currentTheme = document.getElementById('diaNoche').getAttribute('href') === 'diurno.css' ? 'diurno' : 'nocturno';
     applyTheme(currentTheme === 'diurno' ? 'nocturno' : 'diurno');
@@ -37,6 +43,8 @@ document.getElementById("enlace").addEventListener("click", function () {
 // Obtener el año actual
 
 const currentYear = new Date().getFullYear();
+
+
 // Asignar el año al span con id="year"
 
 document.getElementById("year").textContent = currentYear;

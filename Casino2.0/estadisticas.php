@@ -1,25 +1,38 @@
 <?php
+
+
 // Inicio de la sesión
+
 session_start();
 
+
 // Incluir la conexión a la base de datos
+
 include 'conexionBD.php';
 
+
 // Verificar que el usuario esté logueado
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: index.php");
     exit();
 }
 
+
 // Obtener el id del jugador desde la sesión
+
 $id_jugador = $_SESSION['id_jugador'];
 
+
 // Preparar la consulta para obtener los datos del jugador desde la base de datos usando id_jugador
+
 $sql = "SELECT * FROM jugador WHERE id_jugador = :id_jugador";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id_jugador', $id_jugador);
 
+
 // Ejecutar la consulta
+
 if ($stmt->execute()) {
     $jugadorDatos = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -54,7 +67,10 @@ if ($stmt->execute()) {
         <p><b>Edad:</b> <?php echo $edad; ?></p>
         <p><b>DNI:</b> <?php echo $dni; ?></p>
         <p><b>Sexo:</b> <?php echo $sexo; ?></p>
+
+
         <!-- Botón para modificar datos -->
+
         <form action="modificarDatos.php" method="GET">
             <button type="submit">Modificar</button>
         </form>
@@ -68,15 +84,20 @@ if ($stmt->execute()) {
                 <tr>
                     <th>Fecha</th>
                     <th>Apuesta</th>
-                    <th>Lanzamiento</th> <!-- Columna para mostrar el lanzamiento -->
+                    <th>Lanzamiento</th>
                     <th>Saldo Inicial</th>
                     <th>Saldo Final</th>
                     <th>Resultado</th>
                 </tr>
             </thead>
             <tbody>
+
+
                 <?php
+
+
                 // Preparar la consulta para obtener el historial de jugadas
+
                 $sqlJugadas = "SELECT * FROM jugada WHERE id_jugador = :id_jugador ORDER BY hora DESC";
                 $stmtJugadas = $pdo->prepare($sqlJugadas);
                 $stmtJugadas->bindParam(':id_jugador', $id_jugador);
@@ -92,7 +113,9 @@ if ($stmt->execute()) {
                         echo "<td>" . htmlspecialchars($jugada['saldo_inicial']) . "</td>";
                         echo "<td>" . htmlspecialchars($jugada['saldo_final']) . "</td>";
 
+
                         // Determinar el resultado y el color de la celda
+
                         $resultado = ($jugada['apuesta'] > 0) ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Ganó' : 'Perdió') : 'Recarga';
                         $color = ($resultado === 'Ganó') ? '#32da32' : (($resultado === 'Perdió') ? '#ee1414' : 'black');
 
