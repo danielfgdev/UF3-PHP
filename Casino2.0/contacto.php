@@ -1,6 +1,6 @@
 <!-- No funciona en Xampp, pero basicamente seria esto: -->
 
-<form action="enviar_email.php" method="POST">
+<form action="enviarEmail.php" method="POST">
     <label for="email">Correo Electrónico:</label><br>
     <input type="email" id="email" name="email" required><br>
 
