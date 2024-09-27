@@ -1,24 +1,50 @@
 <?php
+// Incluir el autoloader de Composer
+require 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Verificar si el formulario ha sido enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $subject = htmlspecialchars($_POST['subject']);
-    $message = htmlspecialchars($_POST['message']);
+    $nombre = htmlspecialchars(trim($_POST['nombre']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $asunto = htmlspecialchars(trim($_POST['asunto']));
+    $mensaje = htmlspecialchars(trim($_POST['mensaje']));
 
-    // Dirección de correo a la que se enviará
-    $to = "xxxxgmail.com";
+    // Validar los campos del formulario
+    if (!empty($nombre) && !empty($email) && !empty($asunto) && !empty($mensaje) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-    // Encabezados del correo
-    $headers = "From: $email" . "\r\n" .
-        "Reply-To: $email" . "\r\n" .
-        "X-Mailer: PHP/" . phpversion();
+        // Crear una instancia de PHPMailer
+        $mail = new PHPMailer(true);
 
-    // Enviar correo
-    if (mail($to, $subject, $message, $headers)) {
-        echo "El correo ha sido enviado correctamente.";
+        try {
+            // Configuración del servidor SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; // Servidor SMTP de Gmail
+            $mail->SMTPAuth = true; // Activar autenticación SMTP
+            $mail->Username = 'tu_email@gmail.com'; // Tu dirección de correo
+            $mail->Password = 'tu_contraseña_o_contraseña_de_aplicación'; // Tu contraseña o contraseña de aplicación
+            $mail->SMTPSecure = 'tls'; // Habilitar encriptación TLS
+            $mail->Port = 587; // Puerto TCP a utilizar
+
+            // Destinatarios
+            $mail->setFrom('tu_email@gmail.com', 'Tu Nombre'); // Remitente
+            $mail->addAddress($email, $nombre); // Destinatario
+
+            // Contenido del correo
+            $mail->isHTML(true); // Establecer el formato de correo como HTML
+            $mail->Subject = $asunto; // Asunto
+            $mail->Body    = $mensaje; // Mensaje
+            $mail->AltBody = strip_tags($mensaje); // Mensaje alternativo en texto plano
+
+            // Enviar el correo
+            $mail->send();
+            echo 'El mensaje se ha enviado correctamente.';
+        } catch (Exception $e) {
+            echo "Hubo un error al enviar el mensaje: {$mail->ErrorInfo}";
+        }
     } else {
-        echo "Hubo un error al enviar el correo.";
+        echo "Por favor, completa todos los campos correctamente.";
     }
-} else {
-    echo "Método de solicitud no válido.";
 }
