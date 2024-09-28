@@ -1,25 +1,16 @@
 <?php
-
-
 // Inicio de la sesión
-
 session_start();
 
-
 // Incluir la conexión a la base de datos
-
 include 'conexionBD.php';
 
-
 // Verificar que el método sea POST
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
 
-
     // Preparar la consulta para verificar el usuario por apodo
-
     $sql = "SELECT * FROM jugador WHERE apodo = :usuario";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':usuario', $usuario);
@@ -27,16 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->execute()) {
         $usuarioDatos = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
         // Verificar si el usuario existe y la contraseña es correcta
-
         if ($usuarioDatos && password_verify($contrasena, $usuarioDatos['contrasena'])) {
 
-
             // Almacenar datos en la sesión
-
             $_SESSION['id_jugador'] = $usuarioDatos['id_jugador'];
             $_SESSION['usuario'] = $usuarioDatos['apodo'];
+            $_SESSION['rol'] = $usuarioDatos['rol']; // Asegúrate de guardar el rol
             $_SESSION['nombre'] = $usuarioDatos['nombre'];
             $_SESSION['primerApellido'] = explode(' ', $usuarioDatos['apellidos'])[0];
             $_SESSION['segundoApellido'] = explode(' ', $usuarioDatos['apellidos'])[1] ?? '';
@@ -46,16 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['saldo'] = $usuarioDatos['saldo'];
             $_SESSION['historial_apuestas'] = [];
 
-
-            // Redirigir a juego.php
-
-            header("Location: juego.php");
-            exit();
+            // Verificar el rol y redirigir según corresponda
+            if ($usuarioDatos['rol'] === 'admin') {
+                header("Location: admin_dashboard.php"); // Redirigir a la página del admin
+                exit();
+            } else {
+                header("Location: juego.php"); // Redirigir a la página del jugador
+                exit();
+            }
         } else {
-            echo "<script>alert(\"Login incorrecto\");</script>";
+            echo "<script>alert('Login incorrecto');</script>";
         }
     } else {
-        echo "<script>alert(\"Error al verificar usuario\");</script>";
+        echo "<script>alert('Error al verificar usuario');</script>";
     }
 }
 ?>
