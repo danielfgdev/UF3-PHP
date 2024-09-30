@@ -16,6 +16,7 @@ include 'conexionBD.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
+    $emailRegistro = $_POST['emailRegistro'];
     $edad = (int)$_POST['edad'];
     $nombre = $_POST['nombre'];
     $primerApellido = $_POST['primerApellido'];
@@ -35,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Preparar la consulta para insertar en la base de datos
 
-        $sql = "INSERT INTO jugador (nombre, apellidos, dni, edad, apodo, sexo, saldo, contrasena)
-                VALUES (:nombre, :apellidos, :dni, :edad, :apodo, :sexo, :saldo, :contrasena)";
+        $sql = "INSERT INTO jugador (nombre, apellidos, dni, edad, apodo, sexo, saldo, contrasena, emailRegistro)
+                VALUES (:nombre, :apellidos, :dni, :edad, :apodo, :sexo, :saldo, :contrasena, :emailRegistro)";
 
         $stmt = $pdo->prepare($sql);
 
@@ -56,11 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':sexo', $sexo);
         $stmt->bindParam(':saldo', $saldo);
         $stmt->bindParam(':contrasena', $contrasenaHash);
+        $stmt->bindParam(':emailRegistro', $emailRegistro);
 
 
         // Imprimir los parámetros para depuración
 
-        echo "Parametros: $nombre, $apellidos, $dni, $edad, $usuario, $sexo, $saldo, $contrasenaHash<br>";
+        echo "Parametros: $nombre, $apellidos, $dni, $edad, $usuario, $sexo, $saldo, $contrasenaHash, $emailRegistro<br>";
 
         try {
 

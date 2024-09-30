@@ -10,8 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contrasena = $_POST['contrasena'];
 
-    // Preparar la consulta para verificar el usuario por apodo
-    $sql = "SELECT * FROM jugador WHERE apodo = :usuario";
+    // Verificar si el input es un correo electrónico o un nombre de usuario
+    if (filter_var($usuario, FILTER_VALIDATE_EMAIL)) {
+        // Si es un correo electrónico
+        $sql = "SELECT * FROM jugador WHERE emailRegistro = :usuario";
+    } else {
+        // Si es un apodo (nombre de usuario)
+        $sql = "SELECT * FROM jugador WHERE apodo = :usuario";
+    }
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':usuario', $usuario);
 
@@ -24,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Almacenar datos en la sesión
             $_SESSION['id_jugador'] = $usuarioDatos['id_jugador'];
             $_SESSION['usuario'] = $usuarioDatos['apodo'];
-            $_SESSION['rol'] = $usuarioDatos['rol']; // Asegúrate de guardar el rol
+            $_SESSION['emailRegistro'] = $usuarioDatos['emailRegistro'];
+            $_SESSION['rol'] = $usuarioDatos['rol'];
             $_SESSION['nombre'] = $usuarioDatos['nombre'];
             $_SESSION['primerApellido'] = explode(' ', $usuarioDatos['apellidos'])[0];
             $_SESSION['segundoApellido'] = explode(' ', $usuarioDatos['apellidos'])[1] ?? '';
@@ -57,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Iniciar Sesión</h2>
     <form action="index.php" method="POST">
         <div class="form-group">
-            <label for="usuario">Usuario:</label>
+            <label for="usuario">Usuario o Correo Electrónico:</label>
             <input type="text" id="usuario" name="usuario" required>
         </div>
         <div class="form-group">

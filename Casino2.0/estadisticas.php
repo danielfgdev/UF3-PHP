@@ -41,6 +41,7 @@ if ($stmt->execute()) {
         $nombre = htmlspecialchars($jugadorDatos['nombre']);
         $primerApellido = htmlspecialchars(explode(' ', $jugadorDatos['apellidos'])[0]);
         $segundoApellido = htmlspecialchars(explode(' ', $jugadorDatos['apellidos'])[1] ?? '');
+        $emailRegistro = htmlspecialchars($jugadorDatos['emailRegistro']);
         $edad = htmlspecialchars($jugadorDatos['edad']);
         $dni = htmlspecialchars($jugadorDatos['dni']);
         $sexo = htmlspecialchars($jugadorDatos['sexo']);
@@ -62,6 +63,7 @@ if ($stmt->execute()) {
         <h2>Datos del jugador:</h2>
         <p><b>Usuario:</b> <?php echo $_SESSION['usuario']; ?></p>
         <p><b>Nombre:</b> <?php echo $nombre; ?></p>
+        <p><b>Correo Electronico:</b> <?php echo $emailRegistro; ?></p>
         <p><b>Primer Apellido:</b> <?php echo $primerApellido; ?></p>
         <p><b>Segundo Apellido:</b> <?php echo $segundoApellido; ?></p>
         <p><b>Edad:</b> <?php echo $edad; ?></p>

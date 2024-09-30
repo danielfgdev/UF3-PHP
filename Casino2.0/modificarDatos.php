@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     $dni = $_POST['dni'];
     $sexo = $_POST['sexo'];
     $nuevaContrasena = $_POST['nueva_contrasena'];
+    $emailRegistro = $_POST['emailRegistro'];
 
     // Concatenar apellidos
     $apellidos = $primerApellido . ' ' . $segundoApellido;
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
         echo "<p style='color: #ee1414;'>El usuario ya esta en uso. Por favor, elige otro.</p>";
     } else {
         // Actualizar los datos del jugador en la base de datos
-        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo";
+        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro";
 
         // Si hay una nueva contraseña, actualizarla
         if (!empty($nuevaContrasena)) {
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
         $stmt->bindParam(':dni', $dni);
         $stmt->bindParam(':sexo', $sexo);
         $stmt->bindParam(':id_jugador', $id_jugador);
+        $stmt->bindParam(':emailRegistro', $emailRegistro);
 
         // Si hay nueva contraseña, vincular el parámetro
         if (!empty($nuevaContrasena)) {
@@ -77,6 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
             $_SESSION['edad'] = $edad;
             $_SESSION['dni'] = $dni;
             $_SESSION['sexo'] = $sexo;
+            $_SESSION['emailRegistro'] = $emailRegistro;
+
 
             // Redirigir a la pagina de estadisticas con un mensaje de exito
             header("Location: estadisticas.php?actualizado=1");
@@ -106,6 +110,7 @@ if ($jugadorDatos) {
     $edad = htmlspecialchars($jugadorDatos['edad']);
     $dni = htmlspecialchars($jugadorDatos['dni']);
     $sexo = htmlspecialchars($jugadorDatos['sexo']);
+    $emailRegistro = htmlspecialchars($jugadorDatos['emailRegistro']);
 } else {
     // Mensaje de error si no se obtienen los datos
     echo "<p>Error al obtener los datos del jugador.</p>";
@@ -124,10 +129,14 @@ if ($jugadorDatos) {
             <input type="text" id="usuario" name="usuario" value="<?php echo $usuario; ?>" required>
         </div>
         <div class="form-group">
-            <label for="nueva_contrasena">Nueva Contrasena:</label>
-            <input type="password" id="nueva_contrasena" name="nueva_contrasena"> <!-- Cambiado a opcional -->
+            <label for="nueva_contrasena">Nueva Contraseña:</label>
+            <input type="password" id="nueva_contrasena" name="nueva_contrasena">
         </div>
         <div class="form-group">
+            <label for="emailRegistro">Correo electronico:</label>
+            <input type="email" id="emailRegistro" name="emailRegistro" value="<?php echo $emailRegistro; ?>">
+        </div>
+        <div class=" form-group">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
         </div>

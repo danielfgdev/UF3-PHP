@@ -22,6 +22,7 @@
     <form class="form-registro" action="procesarRegistro.php" method="post" id="registro">
         <label>Usuario: <input type="text" name="usuario" required></label>
         <label>Contraseña: <input type="password" name="contrasena" required></label>
+        <label>Correo electronico:<input type="email" name="emailRegistro" required></label>
         <label>Edad: <input type="number" name="edad" min="0" required></label>
         <label>Nombre: <input type="text" name="nombre" required></label>
         <label>Primer Apellido: <input type="text" name="primerApellido" required></label>
