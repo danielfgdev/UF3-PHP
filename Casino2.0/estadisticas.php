@@ -46,6 +46,7 @@ if ($stmt->execute()) {
         $dni = htmlspecialchars($jugadorDatos['dni']);
         $sexo = htmlspecialchars($jugadorDatos['sexo']);
         $saldo = htmlspecialchars($jugadorDatos['saldo']);
+        $direccion = htmlspecialchars($jugadorDatos['direccion']);
     } else {
         echo "No se encontraron datos para el jugador.";
         exit();
@@ -69,6 +70,7 @@ if ($stmt->execute()) {
         <p><b>Edad:</b> <?php echo $edad; ?></p>
         <p><b>DNI:</b> <?php echo $dni; ?></p>
         <p><b>Sexo:</b> <?php echo $sexo; ?></p>
+        <p><b>Direccion:</b> <?php echo $direccion; ?></p>
 
 
         <!-- Botón para modificar datos -->

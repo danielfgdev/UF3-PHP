@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['dni'] = $usuarioDatos['dni'];
             $_SESSION['sexo'] = $usuarioDatos['sexo'];
             $_SESSION['saldo'] = $usuarioDatos['saldo'];
+            $_SESSION['direccion'] = $usuarioDatos['direccion'];
             $_SESSION['historial_apuestas'] = [];
 
             // Verificar el rol y redirigir según corresponda

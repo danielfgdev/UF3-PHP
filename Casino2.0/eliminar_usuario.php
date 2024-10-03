@@ -19,6 +19,7 @@ $sql = "DELETE FROM jugador WHERE id_jugador = :id_jugador";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id_jugador', $id_jugador);
 
+
 // Ejecutar la consulta
 if ($stmt->execute()) {
     // Verificar si el usuario es un administrador

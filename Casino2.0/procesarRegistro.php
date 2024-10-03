@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $primerApellido = $_POST['primerApellido'];
     $segundoApellido = $_POST['segundoApellido'];
+    $direccion = $_POST['direccion'];
     $dni = $_POST['dni'];
     $sexo = $_POST['sexo'];
     $saldo = 0;
@@ -36,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Preparar la consulta para insertar en la base de datos
 
-        $sql = "INSERT INTO jugador (nombre, apellidos, dni, edad, apodo, sexo, saldo, contrasena, emailRegistro)
-                VALUES (:nombre, :apellidos, :dni, :edad, :apodo, :sexo, :saldo, :contrasena, :emailRegistro)";
+        $sql = "INSERT INTO jugador (nombre, apellidos, dni, edad, apodo, sexo, saldo, contrasena, emailRegistro, direccion)
+                VALUES (:nombre, :apellidos, :dni, :edad, :apodo, :sexo, :saldo, :contrasena, :emailRegistro, :direccion)";
 
         $stmt = $pdo->prepare($sql);
 
@@ -58,11 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':saldo', $saldo);
         $stmt->bindParam(':contrasena', $contrasenaHash);
         $stmt->bindParam(':emailRegistro', $emailRegistro);
+        $stmt->bindParam(':direccion', $direccion);
 
 
         // Imprimir los parámetros para depuración
 
-        echo "Parametros: $nombre, $apellidos, $dni, $edad, $usuario, $sexo, $saldo, $contrasenaHash, $emailRegistro<br>";
+        echo "Parametros: $nombre, $apellidos, $dni, $edad, $usuario, $sexo, $saldo, $contrasenaHash, $emailRegistro, $direccion<br>";
 
         try {
 

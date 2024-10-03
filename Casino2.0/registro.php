@@ -27,6 +27,7 @@
         <label>Nombre: <input type="text" name="nombre" required></label>
         <label>Primer Apellido: <input type="text" name="primerApellido" required></label>
         <label>Segundo Apellido: <input type="text" name="segundoApellido" required></label>
+        <label>Direccion: <input type="text" name="direccion" required></label>
         <label>DNI: <input type="text" name="dni" required></label>
         <div class="form-group">
             <label for="sexo">Sexo:</label>
