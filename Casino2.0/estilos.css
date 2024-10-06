@@ -1,24 +1,66 @@
 /* CSS solo para los estilos */
 
 /* Estilos generales */
+:root {
+    font-size: 16px;
+    /* Establecer tamaño base para rem */
+}
 
 header {
     position: fixed;
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    /* Cambiado a fila para evitar columna */
     top: 0;
     left: 0;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    /* 2px */
 }
 
 .header-container {
-    max-width: 1200px;
-    max-height: 100px;
-    /* margin: 0 auto; */
-    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    /* Espacio entre los elementos */
+    align-items: center;
+    /* Centrar verticalmente */
+    padding: 0.625rem;
+    /* 10px */
+    width: 100%;
+    /* Asegurar que ocupe todo el ancho del header */
+}
+
+h1 {
+    text-align: center;
+    /* Centrar el texto del título */
+    flex-grow: 1;
+    /* Permitir que el título ocupe el espacio restante */
+}
+
+#cambioTema {
+    width: 250px;
+    /* Ajusta según sea necesario */
+    padding: 0.5rem;
+    /* Ajusta el padding según tu diseño */
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    /* Otros estilos que quieras aplicar */
+}
+
+
+.dropdown {
+    flex-shrink: 0;
+    /* Evitar que el dropdown cambie de tamaño */
+}
+
+.header-container {
+    max-height: 6.25rem;
+    /* 100px */
+    padding: 0 1.25rem;
+    /* 20px */
 }
 
 body {
@@ -26,18 +68,22 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    padding-top: 60px;
+    padding-top: 3.75rem;
+    /* 60px */
 }
 
 h1,
 h2 {
-    margin: 0 0 1px;
+    margin: 0 0 0.0625rem;
+    /* 1px */
     text-align: center;
 }
 
 h1 {
-    font-size: 50px;
-    padding-top: 20px;
+    font-size: 3.125rem;
+    /* 50px */
+    padding-top: 1.25rem;
+    /* 20px */
 }
 
 /* Contenedores */
@@ -46,19 +92,24 @@ h1 {
 .juego-container,
 .modificar-datos-container,
 .estadisticas-container {
-    max-width: 800px;
-    margin: 50px auto;
+    max-width: 50rem;
+    /* 800px */
+    margin: 3.125rem auto;
+    /* 50px */
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 0.5rem;
+    /* 8px */
     background-color: #f9f9f9;
+    padding: 1rem;
+    /* Añadir padding a los contenedores */
 }
-
 
 footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 0.625rem;
+    /* 10px */
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -69,45 +120,45 @@ footer {
 
 footer p {
     margin: 0;
-    font-size: 14px;
-
+    font-size: 0.875rem;
+    /* 14px */
 }
 
-
 /* Formularios */
-
 form {
     display: grid;
-
 }
 
 .apuesta-form {
     display: grid;
-    margin-bottom: 15px;
-
+    margin-bottom: 0.9375rem;
+    /* 15px */
 }
-
 
 .recarga-form {
     display: grid;
-    margin-top: 15px;
-
+    margin-top: 0.9375rem;
+    /* 15px */
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 0.3125rem;
+    /* 5px */
 }
 
 label {
-    font-size: 16px;
+    font-size: 1rem;
+    /* 16px */
 }
 
 input {
-    padding: 8px;
+    padding: 0.5rem;
+    /* 8px */
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0.25rem;
+    /* 4px */
     width: 100%;
     box-sizing: border-box;
 }
@@ -115,57 +166,72 @@ input {
 .form-registro {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 1.25rem;
+    /* 20px */
 }
 
 .form-registro label {
     display: block;
-    margin-bottom: 10px;
-    font-size: 16px;
+    margin-bottom: 0.625rem;
+    /* 10px */
+    font-size: 1rem;
+    /* 16px */
 }
 
 .form-registro input,
 .form-registro select {
     width: 100%;
-    padding: 8px;
+    padding: 0.5rem;
+    /* 8px */
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0.25rem;
+    /* 4px */
 }
 
 .form-registro button {
     grid-column: span 2;
-    padding: 10px;
+    padding: 0.625rem;
+    /* 10px */
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0.25rem;
+    /* 4px */
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
+    /* 16px */
 }
 
 #registro {
     display: grid;
-    gap: 20px;
+    gap: 1.25rem;
+    /* 20px */
 }
 
 button {
-    padding: 10px;
-    margin-top: 6px;
+    padding: 0.625rem;
+    /* 10px */
+    margin-top: 0.375rem;
+    /* 6px */
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 0.25rem;
+    /* 4px */
     text-align: center;
-    font-size: 14px;
+    font-size: 0.875rem;
+    /* 14px */
 }
 
 /* Tablas */
-
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 1.25rem;
+    /* 20px */
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 0.5rem;
+    /* 8px */
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    /* 2px */
 }
 
 table,
@@ -176,7 +242,8 @@ td {
 
 th,
 td {
-    padding: 12px;
+    padding: 0.75rem;
+    /* 12px */
     text-align: center;
 }
 
@@ -186,39 +253,40 @@ th {
 }
 
 /* Navegacion */
-
 nav {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 1.25rem;
+    /* 20px */
 }
 
 nav a {
     text-decoration: none;
-    margin: 0 10px;
-    font-size: 16px;
+    margin: 0 0.625rem;
+    /* 10px */
+    font-size: 1rem;
+    /* 16px */
 }
 
 /* Otros elementos */
-
 .dinero-disponible,
 .instrucciones-descripcion {
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
+    /* 18px */
     text-align: center;
 }
 
 .dinero-disponible {
-    font-size: 20px;
+    font-size: 1.25rem;
+    /* 20px */
     font-weight: bold;
-
 }
 
 .instrucciones-descripcion {
-    font-size: 15px;
+    font-size: 0.9375rem;
+    /* 15px */
 }
 
-
 /* Estilos para la pagina de estadisticas */
-
 .estadisticas-container {
     display: flex;
     flex-direction: column;
@@ -226,38 +294,119 @@ nav a {
 }
 
 .datos-jugador {
-    margin-bottom: 20px;
-    padding: 20px;
+    margin-bottom: 1.25rem;
+    /* 20px */
+    padding: 1.25rem;
+    /* 20px */
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    /* 8px */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+    /* 2px */
 }
 
 .datos-jugador p {
-    margin: 10px 0;
-    font-size: 16px;
+    margin: 0.625rem 0;
+    /* 10px */
+    font-size: 1rem;
+    /* 16px */
 }
 
 .estadisticas-container h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
+    /* 20px */
 }
 
 .saldo-actual {
-    margin-bottom: 20px;
-    font-size: 18px;
+    margin-bottom: 1.25rem;
+    /* 20px */
+    font-size: 1.125rem;
+    /* 18px */
     text-align: center;
 }
-
 
 #enlace {
     cursor: pointer;
     transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-
 #enlace:hover {
     color: #007bff;
     text-decoration: underline;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: row;
+        /* Mantener fila en pantallas pequeñas */
+        align-items: center;
+        /* Alinear elementos al centro */
+    }
+
+    .login-container,
+    .registro-container,
+    .juego-container,
+    .modificar-datos-container,
+    .estadisticas-container {
+        padding: 1rem;
+        /* Añadir padding a los contenedores en pantallas pequeñas */
+        margin: 1rem;
+        /* Añadir margen a los contenedores en pantallas pequeñas */
+    }
+
+    h1 {
+        font-size: 1.875rem;
+        /* Tamaño de fuente más pequeño */
+        padding-top: 0.625rem;
+        /* Ajustar el padding */
+    }
+
+    .form-registro {
+        grid-template-columns: 1fr;
+        /* Una columna en pantallas pequeñas */
+    }
+
+    footer {
+        flex-direction: row;
+        /* Mantener fila en pantallas pequeñas */
+        align-items: center;
+        /* Centrar elementos en el footer */
+    }
+
+    footer p {
+        font-size: 0.75rem;
+        /* Tamaño de fuente más pequeño en footer */
+    }
+
+    nav a {
+        font-size: 0.875rem;
+        /* Tamaño de fuente más pequeño para navegación */
+    }
+
+    .dinero-disponible {
+        font-size: 1.125rem;
+        /* Ajustar el tamaño de texto */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+        /* Tamaño de fuente más pequeño en móviles */
+    }
+
+    .header-container {
+        padding: 0 0.625rem;
+        /* Reducir el padding en pantallas pequeñas */
+    }
+
+    button {
+        padding: 0.5rem;
+        /* Ajustar el padding de los botones */
+        font-size: 0.75rem;
+        /* Ajustar tamaño de fuente de los botones */
+    }
 }
