@@ -10,15 +10,17 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 // Incluir la conexión a la base de datos
 include 'conexionBD.php';
 
-// Función para listar usuarios o buscar
+// Función para listar solo los jugadores, excluyendo administradores
 function listarUsuarios($pdo, $limite, $offset, $termino = null)
 {
     if ($termino) {
-        $sql = "SELECT * FROM jugador WHERE nombre LIKE :termino OR apodo LIKE :termino LIMIT :limite OFFSET :offset";
+        // Filtrar por término de búsqueda y rol de jugador
+        $sql = "SELECT * FROM jugador WHERE (nombre LIKE :termino OR apodo LIKE :termino) AND rol = 'jugador' LIMIT :limite OFFSET :offset";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':termino', '%' . $termino . '%');
     } else {
-        $sql = "SELECT * FROM jugador LIMIT :limite OFFSET :offset";
+        // Mostrar solo jugadores
+        $sql = "SELECT * FROM jugador WHERE rol = 'jugador' LIMIT :limite OFFSET :offset";
         $stmt = $pdo->prepare($sql);
     }
     $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
@@ -30,15 +32,15 @@ function listarUsuarios($pdo, $limite, $offset, $termino = null)
 // Verificar si se ha enviado un término de búsqueda
 $termino = isset($_POST['termino']) ? $_POST['termino'] : null;
 
-// Obtener el número total de usuarios
-$totalUsuarios = $pdo->query("SELECT COUNT(*) FROM jugador")->fetchColumn();
+// Obtener el número total de jugadores (excluyendo admins)
+$totalUsuarios = $pdo->query("SELECT COUNT(*) FROM jugador WHERE rol = 'jugador'")->fetchColumn();
 
 // Definir el límite de usuarios por página
 $limite = 10;
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $offset = ($pagina - 1) * $limite;
 
-// Llamar a la función para obtener los usuarios
+// Llamar a la función para obtener los jugadores
 $usuarios = listarUsuarios($pdo, $limite, $offset, $termino);
 
 // Calcular el número total de páginas
@@ -63,7 +65,7 @@ $totalPaginas = ceil($totalUsuarios / $limite);
         <button type="submit">Buscar</button>
     </form>
 
-    <h2>Lista de Usuarios</h2>
+    <h2>Lista de Jugadores</h2>
     <table>
         <thead>
             <tr>
@@ -84,8 +86,11 @@ $totalPaginas = ceil($totalUsuarios / $limite);
                     <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
                     <td><?php echo htmlspecialchars($usuario['saldo']); ?></td>
                     <td>
-                        <a href="editar_usuario.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
-                        <form action="eliminar_usuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este usuario?');">
+                        <!-- Enlace para editar los datos del jugador -->
+                        <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
+
+                        <!-- Formulario para eliminar un jugador -->
+                        <form action="eliminar_usuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
                             <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
                             <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
                         </form>
@@ -102,6 +107,7 @@ $totalPaginas = ceil($totalUsuarios / $limite);
         <?php endfor; ?>
     </div>
 
+    <!-- Enlace para cerrar sesión -->
     <a href="salir.php">Salir</a>
 </body>
 
