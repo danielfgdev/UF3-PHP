@@ -1,14 +1,30 @@
 <?php include 'header.php'; ?>
 
-
 <div class="registro-container">
     <h2>Registro</h2>
 
     <?php
+    // Mostrar los errores si existen por intentar registrar datos que ya estan duplicados.
+    if (isset($_GET['errores'])) {
+        $errores = explode(",", $_GET['errores']);
+        foreach ($errores as $error) {
+            if ($error === 'edad_incorrecta') {
+                echo "<div style='color:red;'>Debes tener al menos 18 años para registrarte.</div>";
+            } elseif ($error === 'usuario_duplicado') {
+                echo "<div style='color:red;'>El nombre de usuario ya está en uso. Por favor, elige otro.</div>";
+            } elseif ($error === 'dni_duplicado') {
+                echo "<div style='color:red;'>El DNI ya está en uso. Por favor, verifica tu DNI.</div>";
+            } elseif ($error === 'email_duplicado') {
+                echo "<div style='color:red;'>El correo electrónico ya está en uso. Por favor, usa otro correo.</div>";
+            } elseif ($error === 'registro_fallido') {
+                echo "<div style='color:red;'>Hubo un error en el registro. Inténtalo de nuevo.</div>";
+            } elseif ($error === 'error_sql') {
+                echo "<div style='color:red;'>Error en el servidor. Contacta al administrador.</div>";
+            }
+        }
+    }
 
-
-    // Si en procesarRegistro.php la edad es incorrecta o la
-    //  sesion es NO POST (GET) se muestra alguno de los mensajes de abajo.
+    // Si en procesarRegistro.php la edad es incorrecta o la sesion es NO POST (GET) se muestra alguno de los mensajes de abajo.
     if (isset($_GET['mensaje'])) {
         $mensaje = $_GET['mensaje'];
         if ($mensaje === 'edad_incorrecta') {
@@ -40,10 +56,6 @@
 
         <button type="submit">Registrarse</button>
     </form>
-
-
 </div>
-
-
 
 <?php include 'footer.php'; ?>

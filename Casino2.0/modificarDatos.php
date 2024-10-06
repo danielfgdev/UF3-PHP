@@ -1,5 +1,4 @@
 <?php
-
 // Inicio de la sesion
 session_start();
 
@@ -17,7 +16,6 @@ $id_jugador = $_SESSION['id_jugador'];
 
 // Si el formulario fue enviado para modificar los datos
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
-
     // Obtener los nuevos datos del formulario
     $nuevoUsuario = $_POST['usuario'];
     $nombre = $_POST['nombre'];
@@ -32,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     // Concatenar apellidos
     $apellidos = $primerApellido . ' ' . $segundoApellido;
 
+    // Inicializar variable para el mensaje de error
+    $mensaje = '';
+
     // Verificar si el nuevo usuario ya existe
     $sql = "SELECT COUNT(*) FROM jugador WHERE apodo = :nuevoUsuario AND id_jugador != :id_jugador";
     $stmt = $pdo->prepare($sql);
@@ -41,8 +42,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
 
     // Si el nombre de usuario ya esta en uso, mostrar un mensaje de error
     if ($stmt->fetchColumn() > 0) {
-        echo "<p style='color: #ee1414;'>El usuario ya esta en uso. Por favor, elige otro.</p>";
-    } else {
+        $mensaje .= "<p style='color: #ee1414;'>El usuario ya está en uso. Por favor, elige otro.</p>";
+    }
+
+    // Verificar si el correo electrónico ya está en uso
+    $sql = "SELECT COUNT(*) FROM jugador WHERE emailRegistro = :emailRegistro AND id_jugador != :id_jugador";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':emailRegistro', $emailRegistro);
+    $stmt->bindParam(':id_jugador', $id_jugador);
+    $stmt->execute();
+
+    if ($stmt->fetchColumn() > 0) {
+        $mensaje .= "<p style='color: #ee1414;'>El correo electrónico ya está en uso. Por favor, elige otro.</p>";
+    }
+
+    // Verificar si el DNI ya está en uso
+    $sql = "SELECT COUNT(*) FROM jugador WHERE dni = :dni AND id_jugador != :id_jugador";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':dni', $dni);
+    $stmt->bindParam(':id_jugador', $id_jugador);
+    $stmt->execute();
+
+    if ($stmt->fetchColumn() > 0) {
+        $mensaje .= "<p style='color: #ee1414;'>El DNI ya está en uso. Por favor, elige otro.</p>";
+    }
+
+    // Si no hay errores, proceder con la actualización
+    if (empty($mensaje)) {
         // Actualizar los datos del jugador en la base de datos
         $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro";
 
@@ -81,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
             $_SESSION['sexo'] = $sexo;
             $_SESSION['emailRegistro'] = $emailRegistro;
 
-
             // Redirigir a la pagina de estadisticas con un mensaje de exito
             header("Location: estadisticas.php?actualizado=1");
             exit();
@@ -89,6 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
             // Mensaje de error si la actualizacion falla
             echo "<p>Error al actualizar los datos.</p>";
         }
+    } else {
+        // Mostrar mensaje de error
+        echo $mensaje;
     }
 }
 

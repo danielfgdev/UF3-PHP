@@ -18,7 +18,7 @@ if (!isset($_GET['id'])) {
 
 $id_jugador = $_GET['id']; // Obtener el ID del jugador desde la URL
 
-// Inicializar variable para el mensaje
+// Inicializar variable para el mensaje de error
 $mensaje = '';
 
 // Si el formulario fue enviado para modificar los datos
@@ -35,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
 
     $apellidos = $primerApellido . ' ' . $segundoApellido;
 
+    // Inicializar variable de errores
+    $errores = [];
+
     // Verificar si el nuevo nombre de usuario ya está en uso por otro jugador
     $sql = "SELECT COUNT(*) FROM jugador WHERE apodo = :nuevoUsuario AND id_jugador != :id_jugador";
     $stmt = $pdo->prepare($sql);
@@ -43,14 +46,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     $stmt->execute();
 
     if ($stmt->fetchColumn() > 0) {
-        echo "<p style='color: #ee1414;'>El usuario ya está en uso. Por favor, elige otro.</p>";
-    } else {
+        $errores[] = "El usuario ya está en uso. Por favor, elige otro.";
+    }
+
+    // Verificar si el email ya está en uso
+    $sql = "SELECT COUNT(*) FROM jugador WHERE emailRegistro = :emailRegistro AND id_jugador != :id_jugador";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':emailRegistro', $emailRegistro);
+    $stmt->bindParam(':id_jugador', $id_jugador);
+    $stmt->execute();
+
+    if ($stmt->fetchColumn() > 0) {
+        $errores[] = "El correo electrónico ya está en uso. Por favor, elige otro.";
+    }
+
+    // Verificar si el DNI ya está en uso
+    $sql = "SELECT COUNT(*) FROM jugador WHERE dni = :dni AND id_jugador != :id_jugador";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':dni', $dni);
+    $stmt->bindParam(':id_jugador', $id_jugador);
+    $stmt->execute();
+
+    if ($stmt->fetchColumn() > 0) {
+        $errores[] = "El DNI ya está en uso. Por favor, elige otro.";
+    }
+
+    // Si no hay errores, proceder con la actualización
+    if (empty($errores)) {
         $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro";
         if (!empty($nuevaContrasena)) {
             $nuevaContrasenaHash = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
             $sql .= ", contrasena = :nueva_contrasena";
         }
         $sql .= " WHERE id_jugador = :id_jugador";
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':usuario', $nuevoUsuario);
         $stmt->bindParam(':nombre', $nombre);
@@ -60,14 +89,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
         $stmt->bindParam(':sexo', $sexo);
         $stmt->bindParam(':emailRegistro', $emailRegistro);
         $stmt->bindParam(':id_jugador', $id_jugador);
+
         if (!empty($nuevaContrasena)) {
             $stmt->bindParam(':nueva_contrasena', $nuevaContrasenaHash);
         }
+
         if ($stmt->execute()) {
             $mensaje = "Los datos del jugador se han actualizado con éxito."; // Mensaje de éxito
+            echo "<script>alert('$mensaje'); window.location.href='admin_dashboard.php';</script>";
+            exit(); // Evitar que el resto del código se ejecute después de la redirección
         } else {
-            echo "<p>Error al actualizar los datos.</p>";
+            $mensaje = "Error al actualizar los datos.";
         }
+    } else {
+        // Concatenar todos los errores en un mensaje
+        $mensaje = implode("<br>", $errores);
     }
 }
 
@@ -100,12 +136,6 @@ if ($jugadorDatos) {
     <meta charset="UTF-8">
     <title>Modificar Jugador</title>
     <link rel="stylesheet" href="estilos.css">
-    <script>
-        function mostrarAlerta() {
-            alert("<?php echo isset($mensaje) ? addslashes($mensaje) : ''; ?>");
-            window.location.href = "admin_dashboard.php"; // Redirigir al panel de administración
-        }
-    </script>
 </head>
 
 <body>
@@ -113,9 +143,9 @@ if ($jugadorDatos) {
 
     <!-- Aquí se muestra el mensaje si hay algún error -->
     <?php if (!empty($mensaje)): ?>
-        <script>
-            mostrarAlerta();
-        </script>
+        <div style="color: #ee1414; margin-bottom: 10px;">
+            <?php echo $mensaje; ?>
+        </div>
     <?php endif; ?>
 
     <form action="modificarJugadorAdmin.php?id=<?php echo $id_jugador; ?>" method="POST">
