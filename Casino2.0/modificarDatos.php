@@ -196,7 +196,7 @@ if ($jugadorDatos) {
     </form>
 
     <!-- Boton para eliminar la cuenta -->
-    <form action="eliminar_usuario.php" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.');">
+    <form action="eliminarUsuario.php" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.');">
         <input type="hidden" name="id_jugador" value="<?php echo $id_jugador; ?>">
         <button type="submit" name="eliminar" style="color: red;">Eliminar Cuenta</button>
     </form>

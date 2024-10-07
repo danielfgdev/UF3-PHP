@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
 
         if ($stmt->execute()) {
             $mensaje = "Los datos del jugador se han actualizado con éxito."; // Mensaje de éxito
-            echo "<script>alert('$mensaje'); window.location.href='admin_dashboard.php';</script>";
+            echo "<script>alert('$mensaje'); window.location.href='adminDashboard.php';</script>";
             exit(); // Evitar que el resto del código se ejecute después de la redirección
         } else {
             $mensaje = "Error al actualizar los datos.";
@@ -183,7 +183,7 @@ if ($jugadorDatos) {
         <button type="submit" name="modificar">Guardar cambios</button>
     </form>
 
-    <a href="admin_dashboard.php">Volver al Panel de Administrador</a>
+    <a href="adminDashboard.php">Volver al Panel de Administrador</a>
 </body>
 
 </html>

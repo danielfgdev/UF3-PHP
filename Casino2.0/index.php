@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Verificar el rol y redirigir según corresponda
             if ($usuarioDatos['rol'] === 'admin') {
-                header("Location: admin_dashboard.php"); // Redirigir a la página del admin
+                header("Location: adminDashboard.php"); // Redirigir a la página del admin
                 exit();
             } else {
                 header("Location: juego.php"); // Redirigir a la página del jugador

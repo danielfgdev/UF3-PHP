@@ -7,6 +7,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     exit();
 }
 
+
 // Incluir la conexión a la base de datos
 include 'conexionBD.php';
 
@@ -90,7 +91,7 @@ $totalPaginas = ceil($totalUsuarios / $limite);
                         <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
 
                         <!-- Formulario para eliminar un jugador -->
-                        <form action="eliminar_usuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
+                        <form action="eliminarUsuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
                             <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
                             <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
                         </form>
@@ -110,5 +111,6 @@ $totalPaginas = ceil($totalUsuarios / $limite);
     <!-- Enlace para cerrar sesión -->
     <a href="salir.php">Salir</a>
 </body>
+
 
 </html>

@@ -27,7 +27,7 @@ if ($stmt->execute()) {
         // Mostrar mensaje de éxito antes de redirigir
         echo "<script>
                 alert('La cuenta ha sido eliminada exitosamente.');
-                window.location.href = 'admin_dashboard.php'; // Cambiar a la página del dashboard
+                window.location.href = 'adminDashboard.php'; // Cambiar a la página del dashboard
               </script>";
     } else {
         // Si es un usuario regular, mostrar mensaje de éxito en JavaScript y redirigir
