@@ -7,11 +7,11 @@ const toggleButton = document.getElementById('cambioTema'); // Usa el nuevo ID
 function applyTheme(theme) {
     if (theme === 'nocturno') {
         document.getElementById('diaNoche').setAttribute('href', 'nocturno.css');
-        toggleButton.textContent = 'Cambiar a Modo Diurno';
+        toggleButton.textContent = '-> Diurno';
         localStorage.setItem('theme', 'nocturno');
     } else {
         document.getElementById('diaNoche').setAttribute('href', 'diurno.css');
-        toggleButton.textContent = 'Cambiar a Modo Nocturno';
+        toggleButton.textContent = '-> Nocturno';
         localStorage.setItem('theme', 'diurno');
     }
 }

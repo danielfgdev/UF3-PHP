@@ -23,16 +23,16 @@
 
     <header>
         <div class="header-container">
-            <button id="cambioTema">Cambiar a Modo Nocturno</button> <!-- Botón a la izquierda -->
-            <h1 id="enlace">Casino Virtual</h1> <!-- Título en el centro -->
-            <div class="dropdown"> <!-- Dropdown a la derecha -->
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown link
-                </a>
+            <button id="cambioTema"></button>
+            <h1 id="enlace">Casino Virtual</h1>
+
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="juego.php">Jugar</a></li>
+                    <li><a class="dropdown-item" href="estadisticas.php">Mi perfil - Estadisticas</a></li>
+                    <li><a class="dropdown-item" href="modificarDatos.php">Modificar mis datos</a></li>
+                    <li><a class="dropdown-item" href="salir.php">Salir</a></li>
                 </ul>
             </div>
         </div>
