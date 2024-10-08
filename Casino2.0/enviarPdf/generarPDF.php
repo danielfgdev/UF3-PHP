@@ -16,7 +16,7 @@ include '../conexionBD.php'; // Verifica que la ruta a la conexión a la base de
  */
 function generarPDF($id_jugador, $pdo)
 {
-    // Crear el objeto PDF
+    // Crear el objeto PDF 
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
