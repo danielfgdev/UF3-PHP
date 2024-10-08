@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     $sexo = $_POST['sexo'];
     $nuevaContrasena = $_POST['nueva_contrasena'];
     $emailRegistro = $_POST['emailRegistro'];
+    $direccion = $_POST['direccion'];
 
     $apellidos = $primerApellido . ' ' . $segundoApellido;
 
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
 
     // Si no hay errores, proceder con la actualización
     if (empty($errores)) {
-        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro";
+        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro, direccion = :direccion";
         if (!empty($nuevaContrasena)) {
             $nuevaContrasenaHash = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
             $sql .= ", contrasena = :nueva_contrasena";
@@ -89,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
         $stmt->bindParam(':sexo', $sexo);
         $stmt->bindParam(':emailRegistro', $emailRegistro);
         $stmt->bindParam(':id_jugador', $id_jugador);
+        $stmt->bindParam(':direccion', $direccion);
 
         if (!empty($nuevaContrasena)) {
             $stmt->bindParam(':nueva_contrasena', $nuevaContrasenaHash);
@@ -123,6 +125,7 @@ if ($jugadorDatos) {
     $dni = htmlspecialchars($jugadorDatos['dni']);
     $sexo = htmlspecialchars($jugadorDatos['sexo']);
     $emailRegistro = htmlspecialchars($jugadorDatos['emailRegistro']);
+    $direccion = htmlspecialchars($jugadorDatos['direccion']);
 } else {
     echo "<p>Error al obtener los datos del jugador.</p>";
     exit();
@@ -173,12 +176,16 @@ if ($jugadorDatos) {
         <label for="dni">DNI:</label>
         <input type="text" id="dni" name="dni" value="<?php echo $dni; ?>" required><br>
 
+        <label for="direccion">Direccion:</label>
+        <input type="text" id="direccion" name="direccion" value="<?php echo $direccion; ?>" required>
+
         <label for="sexo">Sexo:</label>
         <select id="sexo" name="sexo" required>
             <option value="masculino" <?php echo ($sexo == 'masculino') ? 'selected' : ''; ?>>Masculino</option>
             <option value="femenino" <?php echo ($sexo == 'femenino') ? 'selected' : ''; ?>>Femenino</option>
             <option value="random" <?php echo ($sexo == 'random') ? 'selected' : ''; ?>>Random</option>
         </select><br>
+
 
         <button type="submit" name="modificar">Guardar cambios</button>
     </form>

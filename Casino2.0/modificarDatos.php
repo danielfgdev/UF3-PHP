@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     $sexo = $_POST['sexo'];
     $nuevaContrasena = $_POST['nueva_contrasena'];
     $emailRegistro = $_POST['emailRegistro'];
+    $direccion = $_POST['direccion'];
 
     // Concatenar apellidos
     $apellidos = $primerApellido . ' ' . $segundoApellido;
@@ -70,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
     // Si no hay errores, proceder con la actualización
     if (empty($mensaje)) {
         // Actualizar los datos del jugador en la base de datos
-        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro";
+        $sql = "UPDATE jugador SET apodo = :usuario, nombre = :nombre, apellidos = :apellidos, edad = :edad, dni = :dni, sexo = :sexo, emailRegistro = :emailRegistro, direccion = :direccion";
 
         // Si hay una nueva contraseña, actualizarla
         if (!empty($nuevaContrasena)) {
@@ -89,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
         $stmt->bindParam(':sexo', $sexo);
         $stmt->bindParam(':id_jugador', $id_jugador);
         $stmt->bindParam(':emailRegistro', $emailRegistro);
+        $stmt->bindParam(':direccion', $direccion);
 
         // Si hay nueva contraseña, vincular el parámetro
         if (!empty($nuevaContrasena)) {
@@ -106,9 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modificar'])) {
             $_SESSION['dni'] = $dni;
             $_SESSION['sexo'] = $sexo;
             $_SESSION['emailRegistro'] = $emailRegistro;
+            $_SESSION['direccion'] = $direccion;
 
             // Redirigir a la pagina de estadisticas con un mensaje de exito
-            header("Location: estadisticas.php?actualizado=1");
+            header("Location: datosJugador.php?actualizado=1");
             exit();
         } else {
             // Mensaje de error si la actualizacion falla
@@ -139,6 +142,7 @@ if ($jugadorDatos) {
     $dni = htmlspecialchars($jugadorDatos['dni']);
     $sexo = htmlspecialchars($jugadorDatos['sexo']);
     $emailRegistro = htmlspecialchars($jugadorDatos['emailRegistro']);
+    $direccion = htmlspecialchars($jugadorDatos['direccion']);
 } else {
     // Mensaje de error si no se obtienen los datos
     echo "<p>Error al obtener los datos del jugador.</p>";
@@ -184,6 +188,12 @@ if ($jugadorDatos) {
             <label for="dni">DNI:</label>
             <input type="text" id="dni" name="dni" value="<?php echo $dni; ?>" required>
         </div>
+
+        <div class="form-group">
+            <label for="direccion">Direccion:</label>
+            <input type="text" id="direccion" name="direccion" value="<?php echo $direccion; ?>" required>
+        </div>
+
         <div class="form-group">
             <label for="sexo">Sexo:</label>
             <select id="sexo" name="sexo" required>
@@ -192,6 +202,7 @@ if ($jugadorDatos) {
                 <option value="random" <?php echo ($sexo == 'random') ? 'selected' : ''; ?>>Random</option>
             </select>
         </div>
+
         <button type="submit" name="modificar">Guardar cambios</button>
     </form>
 
@@ -201,9 +212,6 @@ if ($jugadorDatos) {
         <button type="submit" name="eliminar" style="color: red;">Eliminar Cuenta</button>
     </form>
 
-    <a href="estadisticas.php">Volver a estadisticas</a>
-
-    <a href="salir.php">Salir</a>
 </div>
 
 <?php include 'footer.php'; ?>

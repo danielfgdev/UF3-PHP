@@ -30,8 +30,9 @@
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="juego.php">Jugar</a></li>
-                    <li><a class="dropdown-item" href="estadisticas.php">Mi perfil - Estadisticas</a></li>
+                    <li><a class="dropdown-item" href="datosJugador.php">Mi perfil</a></li>
                     <li><a class="dropdown-item" href="modificarDatos.php">Modificar mis datos</a></li>
+                    <li><a class="dropdown-item" href="tablaEstadisticas.php">Estadisticas</a></li>
                     <li><a class="dropdown-item" href="salir.php">Salir</a></li>
                 </ul>
             </div>

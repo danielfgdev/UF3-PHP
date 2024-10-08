@@ -7,7 +7,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     exit();
 }
 
-
 // Incluir la conexión a la base de datos
 include 'conexionBD.php';
 
@@ -24,10 +23,11 @@ function listarUsuarios($pdo, $limite, $offset, $termino = null)
         $sql = "SELECT * FROM jugador WHERE rol = 'jugador' LIMIT :limite OFFSET :offset";
         $stmt = $pdo->prepare($sql);
     }
+    // Vincular los parámetros límite y offset
     $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retornar los resultados
 }
 
 // Verificar si se ha enviado un término de búsqueda
@@ -37,15 +37,15 @@ $termino = isset($_POST['termino']) ? $_POST['termino'] : null;
 $totalUsuarios = $pdo->query("SELECT COUNT(*) FROM jugador WHERE rol = 'jugador'")->fetchColumn();
 
 // Definir el límite de usuarios por página
-$limite = 10;
-$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-$offset = ($pagina - 1) * $limite;
+$limite = 10; // Cantidad de jugadores a mostrar por página
+$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1; // Página actual
+$offset = ($pagina - 1) * $limite; // Cálculo del desplazamiento
 
 // Llamar a la función para obtener los jugadores
 $usuarios = listarUsuarios($pdo, $limite, $offset, $termino);
 
 // Calcular el número total de páginas
-$totalPaginas = ceil($totalUsuarios / $limite);
+$totalPaginas = ceil($totalUsuarios / $limite); // Redondear hacia arriba para obtener el total de páginas
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ $totalPaginas = ceil($totalUsuarios / $limite);
 <head>
     <meta charset="UTF-8">
     <title>Dashboard de Admin</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="estilos.css"> <!-- Verifica que el archivo de estilos existe -->
 </head>
 
 <body>
@@ -81,11 +81,11 @@ $totalPaginas = ceil($totalUsuarios / $limite);
         <tbody>
             <?php foreach ($usuarios as $usuario): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['apodo']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['saldo']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td> <!-- Verifica que 'id_jugador' sea el nombre correcto -->
+                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td> <!-- Verifica que 'nombre' sea el nombre correcto -->
+                    <td><?php echo htmlspecialchars($usuario['apodo']); ?></td> <!-- Verifica que 'apodo' sea el nombre correcto -->
+                    <td><?php echo htmlspecialchars($usuario['rol']); ?></td> <!-- Verifica que 'rol' sea el nombre correcto -->
+                    <td><?php echo htmlspecialchars($usuario['saldo']); ?></td> <!-- Verifica que 'saldo' sea el nombre correcto -->
                     <td>
                         <!-- Enlace para editar los datos del jugador -->
                         <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
@@ -94,6 +94,13 @@ $totalPaginas = ceil($totalUsuarios / $limite);
                         <form action="eliminarUsuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
                             <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
                             <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
+                        </form>
+
+                        <!-- Formulario para enviar estadísticas por correo -->
+                        <form action="enviarPdf/controlador.php" method="POST" style="display:inline;">
+                            <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
+                            <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Verifica que 'emailRegistro' sea la columna correcta -->
+                            <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">Enviar Estadísticas</button>
                         </form>
                     </td>
                 </tr>
@@ -111,6 +118,5 @@ $totalPaginas = ceil($totalUsuarios / $limite);
     <!-- Enlace para cerrar sesión -->
     <a href="salir.php">Salir</a>
 </body>
-
 
 </html>

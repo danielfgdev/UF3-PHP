@@ -28,13 +28,13 @@ if ($stmt->execute()) {
         echo "<script>
                 alert('La cuenta ha sido eliminada exitosamente.');
                 window.location.href = 'adminDashboard.php'; // Cambiar a la página del dashboard
-              </script>";
+</script>";
     } else {
         // Si es un usuario regular, mostrar mensaje de éxito en JavaScript y redirigir
         echo "<script>
                 alert('Tu cuenta ha sido eliminada.');
                 window.location.href = 'index.php'; // Redirigir a index después de eliminar la cuenta
-              </script>";
+</script>";
     }
 } else {
     // Manejar el error si la eliminación falla

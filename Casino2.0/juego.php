@@ -213,10 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apuesta'])) {
         <button type="submit">Recargar</button>
     </form>
 
-    <nav>
-        <a href="estadisticas.php">Estadísticas de uso</a> |
-        <a href="salir.php">Salir</a>
-    </nav>
+
 </div>
 
 <?php include 'footer.php'; ?>
