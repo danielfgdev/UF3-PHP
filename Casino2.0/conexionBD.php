@@ -5,7 +5,7 @@ $clave = '';
 try {
     $pdo = new PDO($cadena_conexion, $usuario, $clave);
     // $db = new PDO($cadena_conexion, $usuario, $clave, array(PDO::ATTR_PERSISTENT => true));
-    echo 'Conexión OK<br>';
+    // echo 'Conexión OK<br>';
 } catch (PDOException $e) {
-    echo 'Error con la base de datos: ' . $e->getMessage();
+    // echo 'Error con la base de datos: ' . $e->getMessage();
 }

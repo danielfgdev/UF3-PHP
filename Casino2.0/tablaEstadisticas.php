@@ -11,8 +11,9 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-// Obtener el id del jugador desde la sesión
+// Obtener el id del jugador y su correo electrónico desde la sesión
 $id_jugador = $_SESSION['id_jugador'];
+$emailRegistro = $_SESSION['emailRegistro']; // Asegúrate de que el correo esté en la sesión
 
 // Preparar la consulta para obtener el historial de jugadas
 $sqlJugadas = "SELECT * FROM jugada WHERE id_jugador = :id_jugador ORDER BY hora DESC";
@@ -63,6 +64,15 @@ $historialJugadas = $stmtJugadas->fetchAll(PDO::FETCH_ASSOC);
         </tbody>
     </table>
 
+    <!-- Formulario para enviar estadísticas por correo al jugador -->
+    <!-- <h2>Enviar Estadísticas por Correo</h2> -->
+    <br>
+    <form action="enviarPdf/controlador.php" method="POST">
+        <input type="hidden" name="id_jugador" value="<?php echo $id_jugador; ?>">
+        <input type="hidden" name="emailRegistro" value="<?php echo $emailRegistro; ?>">
+        <button type="submit">Enviar PDF al Email</button>
+    </form>
+    <br>
 </div>
 
 <?php include 'footer.php'; ?>
