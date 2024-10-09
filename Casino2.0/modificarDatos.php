@@ -2,6 +2,12 @@
 // Inicio de la sesion
 session_start();
 
+// Verificar que el usuario sea jugador
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'jugador') {
+    header("Location: index.php"); // Redirigir si no es admin
+    exit();
+}
+
 // Incluir la conexion a la base de datos
 include 'conexionBD.php';
 
