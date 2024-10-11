@@ -27,12 +27,35 @@ $stmtJugadas = $pdo->prepare($sqlJugadas);
 $stmtJugadas->bindParam(':id_jugador', $id_jugador);
 $stmtJugadas->execute();
 $historialJugadas = $stmtJugadas->fetchAll(PDO::FETCH_ASSOC);
+
+// Verificar si se ha enviado el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Incluir el archivo que contiene la función de enviar el email
+    include 'enviarPdf/enviarEmail.php';
+
+    // Llamar a la función que genera y envía el PDF
+    if (generarYEnviarPDF($id_jugador, $emailRegistro, $pdo)) {
+        // Mostrar alerta de éxito y redirigir usando JavaScript
+        echo "<script>
+                alert('PDF enviado correctamente.');
+                window.location.href = 'tablaEstadisticas.php';
+              </script>";
+        exit();
+    } else {
+        // Mostrar alerta de error y redirigir usando JavaScript
+        echo "<script>
+                alert('Error al enviar el PDF.');
+                window.location.href = 'tablaEstadisticas.php';
+              </script>";
+        exit();
+    }
+}
 ?>
 
 <?php include 'header.php'; ?>
 
 <div class="estadisticas-container">
-    <h2>Estadísticas de Apuestas</h2>
+    <h2>Estadisticas de Apuestas</h2>
     <p class="saldo-actual">Saldo actual: <?php echo htmlspecialchars($_SESSION['saldo']); ?></p>
     <table>
         <thead>
@@ -71,9 +94,8 @@ $historialJugadas = $stmtJugadas->fetchAll(PDO::FETCH_ASSOC);
     </table>
 
     <!-- Formulario para enviar estadísticas por correo al jugador -->
-    <!-- <h2>Enviar Estadísticas por Correo</h2> -->
     <br>
-    <form action="enviarPdf/controlador.php" method="POST">
+    <form method="POST">
         <input type="hidden" name="id_jugador" value="<?php echo $id_jugador; ?>">
         <input type="hidden" name="emailRegistro" value="<?php echo $emailRegistro; ?>">
         <button type="submit">Enviar PDF al Email</button>

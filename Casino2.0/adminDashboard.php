@@ -10,6 +10,9 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 // Incluir la conexión a la base de datos
 include 'conexionBD.php';
 
+// Incluir la función que envía el PDF
+include 'enviarPdf/enviarEmail.php'; // Asegúrate de que la ruta sea correcta
+
 // Función para listar solo los jugadores, excluyendo administradores
 function listarUsuarios($pdo, $limite, $offset, $termino = null)
 {
@@ -46,6 +49,19 @@ $usuarios = listarUsuarios($pdo, $limite, $offset, $termino);
 
 // Calcular el número total de páginas
 $totalPaginas = ceil($totalUsuarios / $limite); // Redondear hacia arriba para obtener el total de páginas
+
+// Verificar si se ha enviado el formulario para enviar el PDF
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pdf'])) {
+    $id_jugador = $_POST['id_jugador'];
+    $emailRegistro = $_POST['emailRegistro'];
+
+    // Llamar a la función que genera y envía el PDF
+    if (generarYEnviarPDF($id_jugador, $emailRegistro, $pdo)) {
+        echo "<script>alert('PDF enviado correctamente al jugador ID $id_jugador.');</script>";
+    } else {
+        echo "<script>alert('Error al generar el PDF para el jugador ID $id_jugador.');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,25 +97,24 @@ $totalPaginas = ceil($totalUsuarios / $limite); // Redondear hacia arriba para o
         <tbody>
             <?php foreach ($usuarios as $usuario): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td> <!-- Verifica que 'id_jugador' sea el nombre correcto -->
-                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td> <!-- Verifica que 'nombre' sea el nombre correcto -->
-                    <td><?php echo htmlspecialchars($usuario['apodo']); ?></td> <!-- Verifica que 'apodo' sea el nombre correcto -->
-                    <td><?php echo htmlspecialchars($usuario['rol']); ?></td> <!-- Verifica que 'rol' sea el nombre correcto -->
-                    <td><?php echo htmlspecialchars($usuario['saldo']); ?></td> <!-- Verifica que 'saldo' sea el nombre correcto -->
+                    <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['apodo']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario['saldo']); ?></td>
                     <td>
-                        <!-- Enlace para editar los datos del jugador -->
                         <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
 
-                        <!-- Formulario para eliminar un jugador -->
                         <form action="eliminarUsuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
                             <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
                             <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
                         </form>
 
                         <!-- Formulario para enviar estadísticas por correo -->
-                        <form action="enviarPdf/controlador.php" method="POST" style="display:inline;">
+                        <form method="POST" style="display:inline;">
                             <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
-                            <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Verifica que 'emailRegistro' sea la columna correcta -->
+                            <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Asegúrate que 'emailRegistro' es correcto -->
+                            <input type="hidden" name="enviar_pdf" value="1">
                             <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">Enviar Estadísticas</button>
                         </form>
                     </td>
