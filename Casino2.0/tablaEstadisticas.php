@@ -1,4 +1,6 @@
 <?php
+/* This PHP code snippet performs the following actions: */
+
 // Inicio de la sesión
 session_start();
 

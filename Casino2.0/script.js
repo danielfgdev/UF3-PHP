@@ -1,3 +1,11 @@
+/**
+ * The JavaScript code includes functions to toggle between day and night themes, load the saved theme
+ * from localStorage, change the theme on button click, and redirect to the initial page when clicking
+ * on a specific element.
+ * The `theme` parameter in the code refers to the theme that can be applied to the
+ * webpage. It can have two possible values: 'diurno' (day theme) or 'nocturno' (night theme). The
+ * `applyTheme` function is responsible for applying the selected theme
+ */
 // Obtener referencias a los elementos
 const toggleButton = document.getElementById('cambioTema'); // Usa el nuevo ID
 

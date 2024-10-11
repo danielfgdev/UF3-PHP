@@ -1,4 +1,6 @@
 <?php
+/* This PHP code snippet is a login script for a web application. Here's a breakdown of what the code
+does: */
 // Inicio de la sesión
 session_start();
 

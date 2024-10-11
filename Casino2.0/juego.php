@@ -1,4 +1,6 @@
 <?php
+/* This PHP code represents a simple dice game where a player can roll two dice and win if the sum of
+the dice is 7 or 11. Here is a breakdown of what the code is doing: */
 
 
 // Inicio de la sesión

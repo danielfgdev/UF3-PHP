@@ -1,3 +1,6 @@
+<!-- /* The code you provided is a snippet of HTML markup. It represents the footer section of a web page.
+Here's a breakdown of what each part of the code is doing: */ -->
+
 <footer>
 
     <p>Version:1.0</p>

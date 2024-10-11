@@ -1,4 +1,5 @@
 <?php
+/* This PHP code snippet is a registration form processing script. Here's a breakdown of what it does: */
 
 // Inicio de la sesión
 session_start();

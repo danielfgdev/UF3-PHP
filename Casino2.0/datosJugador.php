@@ -1,4 +1,7 @@
 <?php
+/* This PHP code snippet is responsible for displaying the details of a player (jugador) after
+verifying the user's role and login status. Here's a breakdown of what the code does: */
+
 // Inicio de la sesión
 session_start();
 

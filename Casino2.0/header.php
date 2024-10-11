@@ -1,7 +1,11 @@
+<!-- /* The provided code snippet is the beginning of an HTML document for a web page. Here is a
+breakdown of what each part does: */ -->
 <!DOCTYPE html>
 <html lang="es">
 
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

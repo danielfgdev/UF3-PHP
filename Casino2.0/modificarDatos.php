@@ -1,4 +1,6 @@
 <?php
+/* This PHP code is for a user profile page where a logged-in player can modify their personal
+information. Here's a breakdown of what the code does: */
 // Inicio de la sesion
 session_start();
 

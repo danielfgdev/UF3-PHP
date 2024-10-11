@@ -1,4 +1,7 @@
 <?php
+/* This PHP code is for modifying player data in an admin panel. Here's a breakdown of what the code
+does: */
+
 session_start();
 
 // Verificar que el usuario tenga el rol de administrador

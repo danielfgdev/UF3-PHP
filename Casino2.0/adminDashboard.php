@@ -1,4 +1,26 @@
 <?php
+
+/**
+ * The PHP code snippet is a dashboard for an admin user that allows them to manage and interact with a
+ * list of players, including search functionality, player details display, editing, deleting, sending
+ * statistics via email, and pagination.
+ * 
+ * The `pdo` parameter in your code represents a PDO (PHP Data Objects) object that is used
+ * for connecting to a database and executing queries. It is commonly used in PHP to interact with
+ * databases in a secure and efficient manner.
+ * The `limite` parameter in the code represents the limit of users to display per page.
+ * In this case, it is set to 10, meaning that the code will display up to 10 users per page when
+ * listing users on the admin dashboard. This limit helps in organizing and presenting the user
+ * The `offset` parameter in the code snippet you provided is used to determine the
+ * starting point for retrieving a subset of records from a database query. It is typically used in
+ * conjunction with the `LIMIT` clause to implement pagination.
+ * The `termino` parameter in the code represents the search term input by the user in
+ * the search form. It is used to filter the list of users (specifically players) based on their name
+ * or nickname. When a user enters a search term and submits the form, the PHP code processes this
+ * 
+ * The code provided is a PHP script for an admin dashboard. Here's a summary of what the code
+ * does:
+ */
 session_start();
 
 // Verificar que el usuario sea admin

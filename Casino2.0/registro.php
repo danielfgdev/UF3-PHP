@@ -1,3 +1,4 @@
+<!-- /* This PHP code snippet is a registration form for a website. Here's a breakdown of what it does: */ -->
 <?php include 'header.php'; ?>
 
 <div class="registro-container">
