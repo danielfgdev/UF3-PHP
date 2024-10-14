@@ -1,4 +1,3 @@
-<!-- /* This PHP code snippet is a registration form for a website. Here's a breakdown of what it does: */ -->
 <?php include 'header.php'; ?>
 
 <div class="registro-container">
@@ -17,6 +16,10 @@
                 echo "<div style='color:red;'>El DNI ya está en uso. Por favor, verifica tu DNI.</div>";
             } elseif ($error === 'email_duplicado') {
                 echo "<div style='color:red;'>El correo electrónico ya está en uso. Por favor, usa otro correo.</div>";
+            } elseif ($error === 'dni_invalido') {
+                echo "<div style='color:red;'>El formato del DNI es inválido. Debe tener 8 números y una letra.</div>";
+            } elseif ($error === 'email_invalido') {
+                echo "<div style='color:red;'>El formato del correo electrónico es inválido.</div>";
             } elseif ($error === 'registro_fallido') {
                 echo "<div style='color:red;'>Hubo un error en el registro. Inténtalo de nuevo.</div>";
             } elseif ($error === 'error_sql') {
@@ -58,5 +61,25 @@
         <button type="submit">Registrarse</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('registro').addEventListener('submit', function(event) {
+        // Validar DNI (8 números seguidos de una letra)
+        var dni = document.querySelector('input[name="dni"]').value;
+        var dniRegex = /^\d{8}[A-Za-z]$/;
+        if (!dniRegex.test(dni)) {
+            alert('El DNI debe contener 8 números seguidos de una letra.');
+            event.preventDefault(); // Detener el envío si es inválido
+        }
+
+        // Validación básica de correo electrónico
+        var email = document.querySelector('input[name="emailRegistro"]').value;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('El correo electrónico debe contener un "@" y un dominio válido.');
+            event.preventDefault(); // Detener el envío si es inválido
+        }
+    });
+</script>
 
 <?php include 'footer.php'; ?>

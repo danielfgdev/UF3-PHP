@@ -82,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "<td>" . htmlspecialchars($jugada['saldo_final']) . "</td>";
 
                     // Determinar el resultado y el color de la celda
-                    $resultado = ($jugada['apuesta'] > 0) ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Ganó' : 'Perdió') : 'Recarga';
-                    $color = ($resultado === 'Ganó') ? '#32da32' : (($resultado === 'Perdió') ? '#ee1414' : 'black');
+                    $resultado = ($jugada['apuesta'] > 0) ? ($jugada['saldo_final'] > $jugada['saldo_inicial'] ? 'Gano' : 'Perdio') : 'Recarga';
+                    $color = ($resultado === 'Gano') ? '#32da32' : (($resultado === 'Perdio') ? '#ee1414' : 'black');
 
                     echo "<td style='color: $color;'>" . htmlspecialchars($resultado) . "</td>";
                     echo "</tr>";

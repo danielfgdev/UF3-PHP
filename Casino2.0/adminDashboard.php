@@ -86,74 +86,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pdf'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
+<?php include 'header.php'; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard de Admin</title>
-    <link rel="stylesheet" href="estilos.css"> <!-- Verifica que el archivo de estilos existe -->
-</head>
+<h1>Dashboard de Administrador</h1>
 
-<body>
-    <h1>Dashboard de Administrador</h1>
+<!-- Formulario de búsqueda -->
+<form method="POST">
+    <input type="text" name="termino" placeholder="Buscar por nombre o apodo" value="<?php echo htmlspecialchars($termino); ?>">
+    <button type="submit">Buscar</button>
+</form>
 
-    <!-- Formulario de búsqueda -->
-    <form method="POST">
-        <input type="text" name="termino" placeholder="Buscar por nombre o apodo" value="<?php echo htmlspecialchars($termino); ?>">
-        <button type="submit">Buscar</button>
-    </form>
-
-    <h2>Lista de Jugadores</h2>
-    <table>
-        <thead>
+<h2>Lista de Jugadores</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apodo</th>
+            <th>Rol</th>
+            <th>Saldo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($usuarios as $usuario): ?>
             <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apodo</th>
-                <th>Rol</th>
-                <th>Saldo</th>
-                <th>Acciones</th>
+                <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td>
+                <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                <td><?php echo htmlspecialchars($usuario['apodo']); ?></td>
+                <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
+                <td><?php echo htmlspecialchars($usuario['saldo']); ?></td>
+                <td>
+                    <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
+
+                    <form action="eliminarUsuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
+                        <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
+                        <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
+                    </form>
+
+                    <!-- Formulario para enviar estadísticas por correo -->
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
+                        <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Asegúrate que 'emailRegistro' es correcto -->
+                        <input type="hidden" name="enviar_pdf" value="1">
+                        <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">Enviar Estadísticas</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($usuarios as $usuario): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($usuario['id_jugador']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['apodo']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
-                    <td><?php echo htmlspecialchars($usuario['saldo']); ?></td>
-                    <td>
-                        <a href="modificarJugadorAdmin.php?id=<?php echo $usuario['id_jugador']; ?>">Editar</a>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-                        <form action="eliminarUsuario.php" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este jugador?');">
-                            <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
-                            <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Eliminar</button>
-                        </form>
-
-                        <!-- Formulario para enviar estadísticas por correo -->
-                        <form method="POST" style="display:inline;">
-                            <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
-                            <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Asegúrate que 'emailRegistro' es correcto -->
-                            <input type="hidden" name="enviar_pdf" value="1">
-                            <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">Enviar Estadísticas</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <!-- Paginación -->
+<!-- Paginación -->
+<div class="paginacion-container">
     <div class="paginacion">
         <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
             <a href="?pagina=<?php echo $i; ?>" <?php if ($i == $pagina) echo 'style="font-weight:bold;"'; ?>><?php echo $i; ?></a>
         <?php endfor; ?>
     </div>
+    <div class="salir">
+        <a href="salir.php" class="btn-salir">Salir</a>
+    </div>
+</div>
 
-    <!-- Enlace para cerrar sesión -->
-    <a href="salir.php">Salir</a>
-</body>
 
-</html>
+
+
+<?php include 'footer.php'; ?>
