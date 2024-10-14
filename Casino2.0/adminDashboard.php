@@ -1,41 +1,59 @@
 <?php
 
-/**
- * The PHP code snippet is a dashboard for an admin user that allows them to manage and interact with a
- * list of players, including search functionality, player details display, editing, deleting, sending
- * statistics via email, and pagination.
- * 
- * The `pdo` parameter in your code represents a PDO (PHP Data Objects) object that is used
- * for connecting to a database and executing queries. It is commonly used in PHP to interact with
- * databases in a secure and efficient manner.
- * The `limite` parameter in the code represents the limit of users to display per page.
- * In this case, it is set to 10, meaning that the code will display up to 10 users per page when
- * listing users on the admin dashboard. This limit helps in organizing and presenting the user
- * The `offset` parameter in the code snippet you provided is used to determine the
- * starting point for retrieving a subset of records from a database query. It is typically used in
- * conjunction with the `LIMIT` clause to implement pagination.
- * The `termino` parameter in the code represents the search term input by the user in
- * the search form. It is used to filter the list of users (specifically players) based on their name
- * or nickname. When a user enters a search term and submits the form, the PHP code processes this
- * 
- * The code provided is a PHP script for an admin dashboard. Here's a summary of what the code
- * does:
- */
+
+/* `session_start();` is a PHP function that initializes a new session or resumes the existing session
+based on a session identifier passed via a GET or POST request, or a cookie. Sessions are a way to
+store information (in variables) to be used across multiple pages. By calling `session_start();`,
+you are starting a new session or resuming an existing session, allowing you to store and access
+session variables throughout your PHP scripts. This is commonly used for tasks like user
+authentication, storing user-specific data, and maintaining user sessions. */
 session_start();
 
-// Verificar que el usuario sea admin
+
+/* The code snippet `if (!isset(['rol']) || ['rol'] !== 'admin')` is checking whether
+the session variable `['rol']` is not set or if it is set to a value other than `'admin'`. */
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     header("Location: index.php"); // Redirigir si no es admin
     exit();
 }
 
-// Incluir la conexión a la base de datos
+
+/* The line `include 'conexionBD.php';` is including a PHP file named `conexionBD.php` into the current
+script. This means that the code within `conexionBD.php` will be executed as if it were part of the
+current script at that point. */
 include 'conexionBD.php';
 
-// Incluir la función que envía el PDF
-include 'enviarPdf/enviarEmail.php'; // Asegúrate de que la ruta sea correcta
 
-// Función para listar solo los jugadores, excluyendo administradores
+/* The line `include 'enviarPdf/enviarEmail.php';` is including a PHP file named `enviarEmail.php` from
+a directory named `enviarPdf` into the current script. This means that the code within
+`enviarEmail.php` will be executed as if it were part of the current script at that point. */
+include 'enviarPdf/enviarEmail.php';
+
+/**
+ * The function `listarUsuarios` retrieves a list of users from a database based on specified criteria
+ * such as search term, role, limit, and offset.
+ * 
+ * param pdo The `` parameter in the `listarUsuarios` function is expected to be a PDO object
+ * representing a connection to a database. This object is used to prepare and execute SQL statements
+ * within the function. It allows the function to interact with the database to fetch user data based
+ * on the provided criteria.
+ * param limite The `` parameter in the `listarUsuarios` function represents the number of
+ * records to retrieve in a single query. It is used to limit the number of results returned from the
+ * database query. This parameter helps in paginating the results, allowing you to control how many
+ * records are fetched at
+ * param offset The `offset` parameter in the `listarUsuarios` function is used to specify the
+ * starting point from where the records should be fetched in the database query result. It determines
+ * how many initial records to skip before fetching the next set of records.
+ * param termino The `` parameter in the `listarUsuarios` function is used for filtering the
+ * results based on a search term. If a search term is provided, the function will filter the results
+ * to include only records where the `nombre` or `apodo` columns contain the search term and the
+ * 
+ * return The function `listarUsuarios` returns an array of associative arrays containing the results
+ * of the SQL query executed based on the provided parameters. The results are fetched using
+ * `PDO::FETCH_ASSOC` mode, which fetches each row as an associative array where the keys represent the
+ * column names.
+ */
+
 function listarUsuarios($pdo, $limite, $offset, $termino = null)
 {
     if ($termino) {
@@ -55,10 +73,12 @@ function listarUsuarios($pdo, $limite, $offset, $termino = null)
     return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retornar los resultados
 }
 
-// Verificar si se ha enviado un término de búsqueda
+
+/* The line ` = isset(['termino']) ? ['termino'] : null;` is a ternary operator in
+PHP that is used to assign a value to the variable `` based on the existence of a POST
+parameter named `'termino'`. */
 $termino = isset($_POST['termino']) ? $_POST['termino'] : null;
 
-// Obtener el número total de jugadores (excluyendo admins)
 $totalUsuarios = $pdo->query("SELECT COUNT(*) FROM jugador WHERE rol = 'jugador'")->fetchColumn();
 
 // Definir el límite de usuarios por página
