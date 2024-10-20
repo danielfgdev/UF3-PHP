@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enviar_pdf'])) {
                     <!-- Formulario para enviar estadísticas por correo -->
                     <form method="POST" style="display:inline;">
                         <input type="hidden" name="id_jugador" value="<?php echo $usuario['id_jugador']; ?>">
-                        <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>"> <!-- Asegúrate que 'emailRegistro' es correcto -->
+                        <input type="hidden" name="emailRegistro" value="<?php echo $usuario['emailRegistro']; ?>">
                         <input type="hidden" name="enviar_pdf" value="1">
                         <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">Enviar Estadísticas</button>
                     </form>

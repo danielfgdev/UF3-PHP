@@ -34,12 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validar el formato del DNI (8 números seguidos de 1 letra)
     if (!preg_match("/^\d{8}[A-Za-z]$/", $dni)) {
-        $errores[] = "dni_invalido"; // Nuevo mensaje de error para DNI inválido
+        $errores[] = "dni_invalido"; // Mensaje de error para DNI inválido
     }
 
     // Validar el formato del correo electrónico
     if (!filter_var($emailRegistro, FILTER_VALIDATE_EMAIL)) {
-        $errores[] = "email_invalido"; // Nuevo mensaje de error para email inválido
+        $errores[] = "email_invalido"; // Mensaje de error para email inválido
     }
 
     // Verificar si el usuario ya está en uso

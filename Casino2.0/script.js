@@ -6,6 +6,7 @@
  * webpage. It can have two possible values: 'diurno' (day theme) or 'nocturno' (night theme). The
  * `applyTheme` function is responsible for applying the selected theme
  */
+
 // Obtener referencias a los elementos
 const toggleButton = document.getElementById('cambioTema'); // Usa el nuevo ID
 

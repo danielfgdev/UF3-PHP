@@ -37,7 +37,7 @@ if ($emailRegistro) {
     // Ejecutar la consulta
     if ($stmt->execute()) {
         // Verificar si el usuario es un administrador
-        if ($_SESSION['rol'] === 'admin') { // Asegúrate de que esta variable de sesión existe y es correcta
+        if ($_SESSION['rol'] === 'admin') {
             // Mostrar mensaje de éxito antes de redirigir
             if ($pdfEnviado) {
                 echo "<script>

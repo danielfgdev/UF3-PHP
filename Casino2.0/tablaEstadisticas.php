@@ -21,7 +21,7 @@ if (!isset($_SESSION['usuario'])) {
 
 // Obtener el id del jugador y su correo electrónico desde la sesión
 $id_jugador = $_SESSION['id_jugador'];
-$emailRegistro = $_SESSION['emailRegistro']; // Asegúrate de que el correo esté en la sesión
+$emailRegistro = $_SESSION['emailRegistro'];
 
 // Preparar la consulta para obtener el historial de jugadas
 $sqlJugadas = "SELECT * FROM jugada WHERE id_jugador = :id_jugador ORDER BY hora DESC";

@@ -12,50 +12,39 @@ header {
     position: fixed;
     display: flex;
     flex-direction: row;
-    /* Cambiado a fila para evitar columna */
     top: 0;
     left: 0;
     width: 100%;
     background-color: #fff;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-    /* 2px */
 }
 
 .header-container {
     display: flex;
     justify-content: space-between;
-    /* Espacio entre los elementos */
     align-items: center;
-    /* Centrar verticalmente */
     padding: 0.625rem;
     /* 10px */
     width: 100%;
-    /* Asegurar que ocupe todo el ancho del header */
 }
 
 h1 {
     text-align: center;
-    /* Centrar el texto del título */
     flex-grow: 1;
-    /* Permitir que el título ocupe el espacio restante */
 }
 
 #cambioTema {
     width: 90px;
-    /* Ajusta según sea necesario */
     padding: 0.5rem;
-    /* Ajusta el padding según tu diseño */
     border: none;
     cursor: pointer;
     border-radius: 4px;
     text-align: center;
-    /* Otros estilos que quieras aplicar */
 }
 
 
 .dropdown {
     flex-shrink: 0;
-    /* Evitar que el dropdown cambie de tamaño */
 }
 
 .header-container {
@@ -103,7 +92,6 @@ h1 {
     /* 8px */
     background-color: #f9f9f9;
     padding: 1rem;
-    /* Añadir padding a los contenedores */
 }
 
 footer {
@@ -417,34 +405,26 @@ nav a {
 .paginacion-container {
     display: flex;
     flex-direction: column;
-    /* Asegurarse de que los elementos estén en columna */
     align-items: center;
-    /* Centrar horizontalmente */
     margin: 1rem 0;
-    /* Añadir margen para separar del contenido */
 }
 
 .paginacion {
     display: flex;
     justify-content: center;
-    /* Centrar la paginación horizontalmente */
     align-items: center;
-    /* Alinear verticalmente, aunque no se necesita */
     margin-bottom: 1rem;
-    /* Espacio entre la paginación y el botón de salir */
 }
 
 .paginacion a {
     padding: 0.5rem 1rem;
     margin: 0 0.25rem;
-    /* Espaciado entre los enlaces de paginación */
     border: 1px solid #ddd;
     border-radius: 4px;
     text-decoration: none;
     color: #007bff;
     transition: background-color 0.3s ease;
     font-size: 0.875rem;
-    /* Tamaño de fuente más pequeño para la paginación */
 }
 
 .paginacion a:hover {
@@ -460,33 +440,21 @@ nav a {
 /* Estilos para el botón de salir */
 .salir {
     display: flex;
-    /* Asegura que el botón se mantenga centrado */
     justify-content: center;
-    /* Centrar el botón horizontalmente */
 }
 
 .salir .btn-salir {
     background-color: #007bff;
-    /* Color de fondo del botón */
     color: #fff;
-    /* Texto en blanco */
     border: none;
-    /* Sin borde */
     border-radius: 4px;
-    /* Bordes redondeados */
     padding: 0.75rem 1.5rem;
-    /* Espaciado interno más grande */
     cursor: pointer;
-    /* Cambiar cursor al pasar por encima */
     text-decoration: none;
-    /* Sin subrayado */
     font-size: 1rem;
-    /* Tamaño de fuente más grande para el botón de salir */
     transition: background-color 0.3s ease;
-    /* Transición suave para el hover */
 }
 
 .salir .btn-salir:hover {
     background-color: #0056b3;
-    /* Color de fondo en hover */
 }
