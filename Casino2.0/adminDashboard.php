@@ -54,6 +54,7 @@ include 'enviarPdf/enviarEmail.php';
  * column names.
  */
 
+
 function listarUsuarios($pdo, $limite, $offset, $termino = null)
 {
     if ($termino) {
